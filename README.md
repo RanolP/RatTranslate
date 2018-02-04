@@ -1,4 +1,3 @@
-<!-->[![RatTranslate Logo]()](https://github.com/RanolP/RatTranslate)<-->
 # RatTranslate
 Universal translate plugin
 
