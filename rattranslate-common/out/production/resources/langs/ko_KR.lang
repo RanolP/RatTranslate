@@ -1,0 +1,5 @@
+server.platform.ready=RatTranslate가 활성화되었습니다. (플랫폼 : {platform:name} {platform:version}, 버전 : {game:version})
+chat.original=원문
+chat.translate.stop=번역을 사용하지 않습니다.
+chat.translate.start=번역을 사용합니다.
+

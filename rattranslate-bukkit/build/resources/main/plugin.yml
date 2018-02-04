@@ -1,0 +1,12 @@
+name: RatTranslate
+version: 0.2.0-SNAPSHOT
+main: io.github.ranolp.rattranslate.RatTranslateBukkit
+authors: [Ranol_]
+description: Translate the words!
+commands:
+  rattranslate:
+    aliases: [rattr, rtr]
+    description: "Enable or disable the translation."
+  language:
+    aliases: [lang]
+    description: "Change the language or see the language list."

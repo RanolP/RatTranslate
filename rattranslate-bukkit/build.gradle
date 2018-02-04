@@ -1,0 +1,25 @@
+repositories {
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
+}
+
+dependencies {
+    compile project(':rattranslate-common')
+    compile 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: project.version]
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency(':rattranslate-common'))
+    }
+}
