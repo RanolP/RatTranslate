@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RatTranslate {
-    // todo: load from config
     private CompoundTranslator translator;
     private Platform platform;
     private EventBus eventBus = new EventBus((exception, context) -> exception.printStackTrace());
