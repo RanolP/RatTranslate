@@ -2,17 +2,14 @@
 #             ko_KR.lang             #
 #                                    #
 ######################################
-
 server.platform.ready=&aRatTranslate가 활성화되었습니다. (플랫폼 : {platform:name} {platform:version}, 버전 : {game:version})
 server.platform.disable=&cRatTranslate가 비활성화되었습니다. (플랫폼 : {platform:name} {platform:version}, 버전 : {game:version})
-
 server.json.ok=&a이 버전은 Json 메시지를 지원합니다!
 server.json.no=&c이 버전은 Json 메시지를 지원하지 않습니다...
 server.no-translator=&6번역기가 없습니다. NOP 구현을 사용합니다.
 chat.original=원문({lang}): {text}
 chat.translate.stop=&b[!] &f번역을 사용하지 않습니다.
 chat.translate.start=&b[!] &f번역을 사용합니다.
-
 command.require-player=&b[!] &f플레이어만 입력 가능한 명령어입니다.
 command.reset-locale=&b[!] &f맞춤 언어 설정을 초기화했습니다.
 command.page-over=&b[!] &f페이지 '{page}'는 최대 페이지인 '{maxPage}'를 넘었습니다.
@@ -23,7 +20,6 @@ command.page-footer-end=&6마지막 페이지입니다.
 command.set-locale.require-locale=&b[!] &f언어 코드를 입력해야합니다.
 command.set-locale.invalid-locale=&b[!] &f언어 코드가 올바르지 않습니다.
 command.set-locale.success=&b[!] &f맞춤 언어를 '{language}'로 변경했습니다.
-
 lang.afrikaans=아프리카어
 lang.arabic=아랍어
 lang.asturian=아스투리아스어

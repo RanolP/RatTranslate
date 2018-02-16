@@ -6,42 +6,42 @@ import io.github.ranolp.rattranslate.lang.VariableFormatter;
 import io.github.ranolp.rattranslate.lang.VariableType;
 
 public class NumberType implements VariableType {
-    private NumberType() {
-    }
+  private final VariableFormatter FORMATTER = new DefaultFormatter();
 
-    private static final class SingletonHolder {
-        private static final NumberType INSTANCE = new NumberType();
-    }
+  private NumberType() {
+  }
 
-    private class DefaultFormatter implements VariableFormatter {
-        @Override
-        public VariableType getSupportedType() {
-            return NumberType.getInstance();
-        }
+  public static NumberType getInstance() {
+    return SingletonHolder.INSTANCE;
+  }
 
-        @Override
-        public String format(Variable variable) {
-            Object value = variable.getValue();
-            if (!(value instanceof Number)) {
-                return "NaN";
-            }
-            return value.toString();
-        }
-    }
+  @Override
+  public String getName() {
+    return "number";
+  }
 
-    private final VariableFormatter FORMATTER = new DefaultFormatter();
+  @Override
+  public VariableFormatter getDefaultFormatter(Locale locale) {
+    return FORMATTER;
+  }
 
-    public static NumberType getInstance() {
-        return SingletonHolder.INSTANCE;
+  private static final class SingletonHolder {
+    private static final NumberType INSTANCE = new NumberType();
+  }
+
+  private class DefaultFormatter implements VariableFormatter {
+    @Override
+    public VariableType getSupportedType() {
+      return NumberType.getInstance();
     }
 
     @Override
-    public String getName() {
-        return "number";
+    public String format(Variable variable) {
+      Object value = variable.getValue();
+      if (!(value instanceof Number)) {
+        return "NaN";
+      }
+      return value.toString();
     }
-
-    @Override
-    public VariableFormatter getDefaultFormatter(Locale locale) {
-        return FORMATTER;
-    }
+  }
 }

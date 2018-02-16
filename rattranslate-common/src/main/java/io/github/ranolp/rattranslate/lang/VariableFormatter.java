@@ -1,7 +1,7 @@
 package io.github.ranolp.rattranslate.lang;
 
 public interface VariableFormatter {
-    VariableType getSupportedType();
+  VariableType getSupportedType();
 
-    String format(Variable variable);
+  String format(Variable variable);
 }

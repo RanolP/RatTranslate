@@ -8,38 +8,38 @@ import io.github.ranolp.rattranslate.lang.VariableType;
 import java.util.Objects;
 
 public class AnyType implements VariableType {
-    private AnyType() {
-    }
+  private final VariableFormatter FORMATTER = new DefaultFormatter();
 
-    private static final class SingletonHolder {
-        private static final AnyType INSTANCE = new AnyType();
-    }
+  private AnyType() {
+  }
 
-    private class DefaultFormatter implements VariableFormatter {
-        @Override
-        public VariableType getSupportedType() {
-            return AnyType.getInstance();
-        }
+  public static AnyType getInstance() {
+    return SingletonHolder.INSTANCE;
+  }
 
-        @Override
-        public String format(Variable variable) {
-            return Objects.toString(variable.getValue());
-        }
-    }
+  @Override
+  public String getName() {
+    return "any";
+  }
 
-    private final VariableFormatter FORMATTER = new DefaultFormatter();
+  @Override
+  public VariableFormatter getDefaultFormatter(Locale locale) {
+    return FORMATTER;
+  }
 
-    public static AnyType getInstance() {
-        return SingletonHolder.INSTANCE;
+  private static final class SingletonHolder {
+    private static final AnyType INSTANCE = new AnyType();
+  }
+
+  private class DefaultFormatter implements VariableFormatter {
+    @Override
+    public VariableType getSupportedType() {
+      return AnyType.getInstance();
     }
 
     @Override
-    public String getName() {
-        return "any";
+    public String format(Variable variable) {
+      return Objects.toString(variable.getValue());
     }
-
-    @Override
-    public VariableFormatter getDefaultFormatter(Locale locale) {
-        return FORMATTER;
-    }
+  }
 }

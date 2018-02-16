@@ -9,23 +9,23 @@ import java.util.Map;
 import java.util.Set;
 
 public class Storage {
-    private static Map<String, VariableType> types = new HashMap<>();
-    private static Map<VariableType, Set<VariableFormatter>> formatters = new HashMap<>();
+  private static Map<String, VariableType> types = new HashMap<>();
+  private static Map<VariableType, Set<VariableFormatter>> formatters = new HashMap<>();
 
-    static {
-        addType(NumberType.getInstance());
-    }
+  static {
+    addType(NumberType.getInstance());
+  }
 
-    public static void addType(VariableType type) {
-        types.put(type.getName(), type);
-    }
+  public static void addType(VariableType type) {
+    types.put(type.getName(), type);
+  }
 
-    static VariableType getType(String name) {
-        name = name == null ? null : name.toLowerCase();
-        return types.containsKey(name) ? types.get(name) : AnyType.getInstance();
-    }
+  static VariableType getType(String name) {
+    name = name == null ? null : name.toLowerCase();
+    return types.containsKey(name) ? types.get(name) : AnyType.getInstance();
+  }
 
-    public static void addFormatter(VariableFormatter formatter) {
-        formatters.computeIfAbsent(formatter.getSupportedType(), it -> new HashSet<>()).add(formatter);
-    }
+  public static void addFormatter(VariableFormatter formatter) {
+    formatters.computeIfAbsent(formatter.getSupportedType(), it -> new HashSet<>()).add(formatter);
+  }
 }

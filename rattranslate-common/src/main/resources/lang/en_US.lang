@@ -2,21 +2,17 @@
 #                en_US.lang                #
 # The translation may not be 100% accurate #
 ############################################
-
 server.platform.ready=&aRatTranslate is enabled! (platform : {platform:name} {platform:version}, version : {game:version})
 server.platform.disable=&cRatTranslate is disabled! (platform : {platform:name} {platform:version}, version : {game:version})
-
 server.json.ok=&aThis version supports the json message!
 server.json.no=&cThis version does not support the json message...
 server.no-translator=&6Translator does not exists, Use the NOP implementation.
 chat.original=Original({lang}): {text}
 chat.translate.stop=&b[!] &fFrom now on, You don't use the translation.
 chat.translate.start=&b[!] &fFrom now on, You use the translation.
-
 command.require-player=&b[!] &fThis command can only be issued by player.
 command.page-over=&b[!] &fPage '{page}' over the max page '{maxPage}'.
 command.reset-locale=&b[!] &fCustom language setting have been reset.
-
 lang.afrikaans=Afrikaans
 lang.arabic=Arabic
 lang.asturian=Asturian

@@ -5,13 +5,13 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class GsonUtil {
-    private GsonUtil() {
-        throw new UnsupportedOperationException("You cannot instantiate GsonUtil");
-    }
+  private static final JsonParser PARSER = new JsonParser();
 
-    private static final JsonParser PARSER = new JsonParser();
+  private GsonUtil() {
+    throw new UnsupportedOperationException("You cannot instantiate GsonUtil");
+  }
 
-    public static JsonElement parse(CharSequence json) throws JsonSyntaxException {
-        return PARSER.parse(json.toString());
-    }
+  public static JsonElement parse(CharSequence json) throws JsonSyntaxException {
+    return PARSER.parse(json.toString());
+  }
 }

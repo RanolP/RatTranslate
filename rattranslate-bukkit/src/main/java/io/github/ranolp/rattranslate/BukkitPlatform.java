@@ -12,74 +12,73 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 final class BukkitPlatform extends Platform {
-    private RatTranslateBukkit plugin;
-    private BukkitConfiguration configurationSection;
-    // todo: how to get?
-    private boolean jsonMessageAvailable = true;
+  private final File dataFile;
+  private RatTranslateBukkit plugin;
+  private BukkitConfiguration configurationSection;
+  // todo: how to get?
+  private boolean jsonMessageAvailable = true;
+  private YamlConfiguration dataConfiguration;
 
-    private final File dataFile;
-    private YamlConfiguration dataConfiguration;
 
+  BukkitPlatform(RatTranslateBukkit plugin) {
+    this.plugin = plugin;
+    dataFile = new File(plugin.getDataFolder(), "data.yml");
+  }
 
-    BukkitPlatform(RatTranslateBukkit plugin) {
-        this.plugin = plugin;
-        dataFile = new File(plugin.getDataFolder(), "data.yml");
+  @Override
+  public Configuration getConfiguration() {
+    return configurationSection;
+  }
+
+  @Override
+  public boolean isJsonMessageAvailable() {
+    return jsonMessageAvailable;
+  }
+
+  @Override
+  public Player getPlayer(String name) {
+    return BukkitPlayer.of(Bukkit.getPlayer(name));
+  }
+
+  @Override
+  public String getName() {
+    return "Bukkit";
+  }
+
+  @Override
+  public String getVersion() {
+    return plugin.getDescription().getVersion();
+  }
+
+  @Override
+  public String getGameVersion() {
+    return Bukkit.getBukkitVersion();
+  }
+
+  @Override
+  public void sendMessage(String message) {
+    Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+  }
+
+  @Override
+  public void reload() {
+    plugin.reloadConfig();
+    configurationSection = new BukkitConfiguration(plugin.getConfig());
+    BukkitPlayer.PLAYER_MAP.clear();
+    dataConfiguration = YamlConfiguration.loadConfiguration(dataFile);
+    if (dataConfiguration.isList("players")) {
+      // Deserialize on method call
+      dataConfiguration.getList("players");
     }
+  }
 
-    @Override
-    public Configuration getConfiguration() {
-        return configurationSection;
+  @Override
+  public void save() {
+    dataConfiguration.set("players", new ArrayList<>(BukkitPlayer.PLAYER_MAP.values()));
+    try {
+      dataConfiguration.save(dataFile);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-    @Override
-    public boolean isJsonMessageAvailable() {
-        return jsonMessageAvailable;
-    }
-
-    @Override
-    public Player getPlayer(String name) {
-        return BukkitPlayer.of(Bukkit.getPlayer(name));
-    }
-
-    @Override
-    public String getName() {
-        return "Bukkit";
-    }
-
-    @Override
-    public String getVersion() {
-        return plugin.getDescription().getVersion();
-    }
-
-    @Override
-    public String getGameVersion() {
-        return Bukkit.getBukkitVersion();
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-    }
-
-    @Override
-    public void reload() {
-        plugin.reloadConfig();
-        configurationSection = new BukkitConfiguration(plugin.getConfig());
-        BukkitPlayer.PLAYER_MAP.clear();
-        dataConfiguration = YamlConfiguration.loadConfiguration(dataFile);
-        if (dataConfiguration.isList("players")) {
-            // Deserialize on method call
-            dataConfiguration.getList("players");
-        }
-    }
-
-    @Override
-    public void save() {
-        dataConfiguration.set("players", new ArrayList<>(BukkitPlayer.PLAYER_MAP.values()));
-        try {
-            dataConfiguration.save(dataFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+  }
 }

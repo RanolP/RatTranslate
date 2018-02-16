@@ -5,26 +5,27 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class Util {
-    private Util(){
-        throw new UnsupportedOperationException("You cannot instantiate Util");
-    }
-    private static class CastingFunction<T> implements Function<Object, Optional<T>> {
-        private Class<T> clazz;
+  private Util() {
+    throw new UnsupportedOperationException("You cannot instantiate Util");
+  }
 
-        public CastingFunction(Class<T> clazz) {
-            this.clazz = Objects.requireNonNull(clazz, "class");
-        }
+  public static <T> Function<Object, Optional<T>> cast(Class<T> clazz) {
+    return new CastingFunction<>(clazz);
+  }
 
-        @Override
-        public Optional<T> apply(Object o) {
-            if (clazz.isInstance(o)) {
-                return Optional.of(clazz.cast(o));
-            }
-            return Optional.empty();
-        }
+  private static class CastingFunction<T> implements Function<Object, Optional<T>> {
+    private Class<T> clazz;
+
+    public CastingFunction(Class<T> clazz) {
+      this.clazz = Objects.requireNonNull(clazz, "class");
     }
 
-    public static <T> Function<Object, Optional<T>> cast(Class<T> clazz) {
-        return new CastingFunction<>(clazz);
+    @Override
+    public Optional<T> apply(Object o) {
+      if (clazz.isInstance(o)) {
+        return Optional.of(clazz.cast(o));
+      }
+      return Optional.empty();
     }
+  }
 }
