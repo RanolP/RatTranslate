@@ -1,4 +1,0 @@
-language: ko_KR
-translator:
-  GoogleApis:
-    use: true
