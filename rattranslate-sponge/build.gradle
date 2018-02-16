@@ -4,7 +4,8 @@ plugins {
 
 dependencies {
     compile project(':rattranslate-common')
-compile 'org.spongepowered:spongeapi:6.0.0'}
+    compile group: 'org.spongepowered', name: 'spongeapi', version: '6.0.0'
+}
 
 sponge.plugin.id = pluginId
 

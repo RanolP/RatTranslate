@@ -7,7 +7,7 @@ repositories {
 
 dependencies {
     compile project(':rattranslate-common')
-    compile 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit', name: 'bukkit', version: '1.12.2-R0.1-SNAPSHOT'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

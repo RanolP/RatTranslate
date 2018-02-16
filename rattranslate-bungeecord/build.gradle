@@ -7,7 +7,7 @@ repositories {
 
 dependencies {
     compile project(':rattranslate-common')
-    compile 'net.md-5:bungeecord-api:1.8-SNAPSHOT'
+    compile group: 'net.md-5', name: 'bungeecord-api', version: '1.8-SNAPSHOT'
 }
 
 processResources {
