@@ -21,7 +21,7 @@ public class LanguageCommand implements Command {
           break;
         case "list":
           List<Locale> values = Arrays.asList(Locale.values());
-          Integer page = 1;
+          int page = 1;
           if (args.length == 2) {
             try {
               page = Integer.parseInt(args[1]);

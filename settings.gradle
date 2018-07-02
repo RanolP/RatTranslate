@@ -1,3 +1,3 @@
 rootProject.name = 'rattranslate'
 
-include 'rattranslate-common', 'rattranslate-bukkit', 'rattranslate-sponge', 'rattranslate-bungeecord'
+include 'rattranslate-common', 'rattranslate-spigot', 'rattranslate-sponge'

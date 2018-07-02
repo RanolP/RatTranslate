@@ -14,20 +14,30 @@ public interface MessageReceiver {
 
   void sendMessage(String message);
 
+  boolean canReceiveMessage();
+
   default void sendMessage(LangStorage storage, String key, List<Variable> variables) {
-    sendMessage(format(storage.get(getLocale(), key), variables));
+    if (canReceiveMessage()) {
+      sendMessage(format(storage.get(getLocale(), key), variables));
+    }
   }
 
   default void sendMessage(LangStorage storage, String key, Variable... variables) {
-    sendMessage(format(storage.get(getLocale(), key), Arrays.asList(variables)));
+    if (canReceiveMessage()) {
+      sendMessage(format(storage.get(getLocale(), key), Arrays.asList(variables)));
+    }
   }
 
   default void sendMessage(FormattableText text, Variable... variables) {
-    sendMessage(format(text, Arrays.asList(variables)));
+    if (canReceiveMessage()) {
+      sendMessage(format(text, Arrays.asList(variables)));
+    }
   }
 
   default void sendMessage(FormattableText text, List<Variable> variables) {
-    sendMessage(format(text, variables));
+    if (canReceiveMessage()) {
+      sendMessage(format(text, variables));
+    }
   }
 
   default String format(LangStorage storage, String key) {

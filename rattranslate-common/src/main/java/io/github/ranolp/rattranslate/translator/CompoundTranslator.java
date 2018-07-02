@@ -20,7 +20,7 @@ public class CompoundTranslator implements Translator {
 
   @Override
   public boolean isLocaleSupported(Locale locale) {
-    for (Translator it : translators) {
+    for (Translator it: translators) {
       if (it.isLocaleSupported(locale)) {
         return true;
       }
@@ -30,7 +30,7 @@ public class CompoundTranslator implements Translator {
 
   @Override
   public boolean isAutoSupported() {
-    for (Translator it : translators) {
+    for (Translator it: translators) {
       if (it.isAutoSupported()) {
         return true;
       }
@@ -40,7 +40,7 @@ public class CompoundTranslator implements Translator {
 
   @Override
   public String translate(String sentences, Locale from, Locale to) {
-    for (Translator it : translators) {
+    for (Translator it: translators) {
       if (it.isLocaleSupported(from) && it.isLocaleSupported(to)) {
         String result = it.translate(sentences, from, to);
         if (result != null) {
@@ -53,7 +53,7 @@ public class CompoundTranslator implements Translator {
 
   @Override
   public String translateAuto(String sentences, Locale to) {
-    for (Translator it : translators) {
+    for (Translator it: translators) {
       if (it.isAutoSupported() && it.isLocaleSupported(to)) {
         String result = it.translateAuto(sentences, to);
         if (result != null) {

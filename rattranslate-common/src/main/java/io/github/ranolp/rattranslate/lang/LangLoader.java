@@ -18,7 +18,7 @@ public class LangLoader {
     try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
       Properties properties = new Properties();
       properties.load(reader);
-      for (String key : properties.stringPropertyNames()) {
+      for (String key: properties.stringPropertyNames()) {
         translated.put(key, new FormattableText(properties.getProperty(key)));
       }
     } catch (IOException e) {

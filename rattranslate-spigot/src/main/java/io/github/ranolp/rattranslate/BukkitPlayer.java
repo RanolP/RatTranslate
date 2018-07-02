@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstraction.Player implements ConfigurationSerializable {
@@ -35,39 +36,21 @@ public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstractio
   }
 
   public static BukkitPlayer of(Player player) {
-    if (!PLAYER_MAP.containsKey(player.getName())) {
-      PLAYER_MAP.put(player.getName(), new BukkitPlayer(player.getName()));
-    }
-    return PLAYER_MAP.get(player.getName());
+    Objects.requireNonNull(player, "player");
+    return of(player.getName());
   }
 
   public static BukkitPlayer of(String nickname) {
-    if (!PLAYER_MAP.containsKey(nickname)) {
-      PLAYER_MAP.put(nickname, new BukkitPlayer(nickname));
-    }
-    return PLAYER_MAP.get(nickname);
-  }
-
-  /**
-   * Required method for deserialization
-   *
-   * @param args map to deserialize
-   * @return deserialized location
-   * @throws IllegalArgumentException if the world don't exists
-   * @see ConfigurationSerializable
-   */
-  public static BukkitPlayer deserialize(Map<String, Object> args) {
-    BukkitPlayer result = BukkitPlayer.of((String) args.get("nickname"));
-    result.setTranslateMode((boolean) args.get("translate"));
-    Object customLocale = args.get("custom-locale");
-    if (customLocale instanceof String) {
-      result.setCustomLocale(Locale.getByCode((String) customLocale));
-    }
-    return result;
+    Objects.requireNonNull(nickname, "nickname");
+    return PLAYER_MAP.computeIfAbsent(nickname, BukkitPlayer::new);
   }
 
   public Optional<Player> getPlayer() {
     return Optional.ofNullable(Bukkit.getPlayerExact(nickname));
+  }
+
+  public String getNickname() {
+    return nickname;
   }
 
   @Override
@@ -92,6 +75,11 @@ public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstractio
   }
 
   @Override
+  public boolean isOnline() {
+    return getPlayer().isPresent();
+  }
+
+  @Override
   public Locale getRealLocale() {
     return getPlayer().map(DELEGATE::getLocale).map(Locale::getByCode).orElse(Locale.AMERICAN_ENGLISH);
   }
@@ -102,6 +90,27 @@ public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstractio
     result.put("nickname", nickname);
     result.put("translate", getTranslateMode());
     result.put("custom-locale", getCustomLocale() != null ? getCustomLocale().getCode() : null);
+    return result;
+  }
+
+  /**
+   * Required method for deserialization
+   *
+   * @param args map to deserialize
+   * @return deserialized location
+   * @throws IllegalArgumentException if the world don't exists
+   * @see ConfigurationSerializable
+   */
+  public static BukkitPlayer deserialize(Map<String, Object> args) {
+    BukkitPlayer result = BukkitPlayer.of((String) args.get("nickname"));
+    Object translate = args.get("translate");
+    if (translate instanceof Boolean) {
+      result.setTranslateMode((Boolean) translate);
+    }
+    Object customLocale = args.get("custom-locale");
+    if (customLocale instanceof String) {
+      result.setCustomLocale(Locale.getByCode((String) customLocale));
+    }
     return result;
   }
 }

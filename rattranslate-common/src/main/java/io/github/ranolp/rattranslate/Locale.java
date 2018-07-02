@@ -108,7 +108,7 @@ public enum Locale {
   }
 
   public static Locale getByCode(String code) {
-    for (Locale l : values()) {
+    for (Locale l: values()) {
       if (l.getCode().equalsIgnoreCase(code)) {
         return l;
       }

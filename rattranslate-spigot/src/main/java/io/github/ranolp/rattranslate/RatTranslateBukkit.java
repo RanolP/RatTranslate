@@ -5,6 +5,7 @@ import io.github.ranolp.rattranslate.event.PlatformReadyEvent;
 import io.github.ranolp.rattranslate.event.command.CommandIssueEvent;
 import io.github.ranolp.rattranslate.lang.LangLoader;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public final class RatTranslateBukkit extends JavaPlugin {
       // noinspection ResultOfMethodCallIgnored
       lang.mkdirs();
     }
-    for (Locale locale : Locale.values()) {
+    for (Locale locale: Locale.values()) {
       if (getResource("lang/" + locale.getCode() + ".lang") != null) {
         if (!new File(lang, locale.getCode() + ".lang").exists()) {
           saveResource("lang/" + locale.getCode() + ".lang", true);
@@ -54,7 +55,7 @@ public final class RatTranslateBukkit extends JavaPlugin {
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     RatTranslate instance = RatTranslate.getInstance();
     if (!(sender instanceof Player)) {
-      sender.sendMessage(instance.getPlatform().format(instance.getLangStorage(), "command.require-player"));
+      sender.sendMessage(ChatColor.translateAlternateColorCodes('&', instance.getPlatform().format(instance.getLangStorage(), "command.require-player")));
     } else {
       instance.getEventBus().post(new CommandIssueEvent(BukkitPlayer.of((Player) sender), label, args));
     }

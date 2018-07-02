@@ -150,7 +150,7 @@ public class RatTranslate {
     List<Translator> translators = new ArrayList<>();
     serverLocale = section.getString("language").map(Locale::getByCode).orElse(Locale.AMERICAN_ENGLISH);
     section.getSection("translator").ifPresent(translatorSection -> {
-      for (String key : translatorSection.getKeys(false)) {
+      for (String key: translatorSection.getKeys(false)) {
         translatorSection.getSection(key).ifPresent(configuration -> {
           if (configuration.getBoolean("use").orElse(true)) {
             Translators.get(key).ifPresent(translator -> {

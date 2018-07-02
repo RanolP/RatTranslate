@@ -9,6 +9,9 @@ import io.github.ranolp.rattranslate.lang.LangStorage;
 import io.github.ranolp.rattranslate.lang.Variable;
 import io.github.ranolp.rattranslate.translator.Translator;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 class ChatHandler {
   // bukkit chat system is on async thread
   @AllowConcurrentEvents
@@ -18,10 +21,21 @@ class ChatHandler {
     Translator translator = RatTranslate.getInstance().getTranslator();
     Platform platform = RatTranslate.getInstance().getPlatform();
     Player player = e.getPlayer();
-    for (Player recipient : e.getRecipients()) {
-      String translated = String.format(e.getFormat(), player.getDisplayName(),
-          translator.translate(e.getMessage(), player.getLocale(),
-              recipient.getLocale()));
+    Map<Locale, String> translateMap = e.getRecipients().
+        stream().
+        map(Player::getLocale).
+        distinct().
+        collect(
+            Collectors.toMap(
+                locale -> locale,
+                locale -> String.format(
+                    e.getFormat(),
+                    player.getDisplayName(),
+                    translator.translate(e.getMessage(), player.getLocale(), locale))
+            )
+        );
+    for (Player recipient: e.getRecipients()) {
+      String translated = translateMap.get(recipient.getLocale());
       if (platform.isJsonMessageAvailable()) {
         String hover = recipient.format(langStorage, "chat.original",
             Variable.ofAny("hover", "text", e.getMessage()),

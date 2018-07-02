@@ -11,6 +11,8 @@ public abstract class Player implements MessageReceiver {
 
   public abstract Locale getRealLocale();
 
+  public abstract boolean isOnline();
+
   public final Locale getLocale() {
     return getCustomLocale() != null ? getCustomLocale() : getRealLocale();
   }
@@ -34,6 +36,11 @@ public abstract class Player implements MessageReceiver {
     } else {
       sendMessage(RatTranslate.getInstance().getLangStorage(), "chat.translate.stop");
     }
+  }
+
+  @Override
+  public boolean canReceiveMessage() {
+    return isOnline();
   }
 
   public Locale getCustomLocale() {

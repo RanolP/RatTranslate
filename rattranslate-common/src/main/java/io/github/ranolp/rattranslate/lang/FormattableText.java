@@ -112,7 +112,7 @@ public class FormattableText {
 
   public String format(List<Variable> variables, Locale locale) {
     StringBuilder result = new StringBuilder();
-    for (Node node : nodes) {
+    for (Node node: nodes) {
       result.append(node.format(variables, locale));
     }
     return result.toString();

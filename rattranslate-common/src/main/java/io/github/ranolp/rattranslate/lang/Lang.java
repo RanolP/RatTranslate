@@ -19,13 +19,7 @@ public class Lang {
 
   public FormattableText get(String key) {
     return Optional.ofNullable(sentences.get(key))
-        .orElseThrow(() -> new IllegalStateException("The language " +
-            locale.getName() +
-            "(" +
-            locale.getCode() +
-            ") does not support key '" +
-            key +
-            "'"));
+        .orElseThrow(() -> new IllegalStateException(String.format("The language `%s`(%s) does not support key '%s'", locale.getName(), locale.getCode(), key)));
   }
 
   public Locale getLocale() {
