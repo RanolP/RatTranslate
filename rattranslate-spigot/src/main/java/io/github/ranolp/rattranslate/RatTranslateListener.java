@@ -5,6 +5,7 @@ import io.github.ranolp.rattranslate.event.PlayerChatEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +13,7 @@ import java.util.Set;
 class RatTranslateListener implements Listener {
   // Use old event for compatibility
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-  @SuppressWarnings("deprecation")
-  public void onChat(org.bukkit.event.player.PlayerChatEvent e) {
+  public void onChat(AsyncPlayerChatEvent e) {
     Set<Player> set = new HashSet<>();
     Set<org.bukkit.entity.Player> toRemove = new HashSet<>();
     for (org.bukkit.entity.Player bukkitPlayer: e.getRecipients()) {
