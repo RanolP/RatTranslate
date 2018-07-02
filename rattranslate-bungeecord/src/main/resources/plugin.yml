@@ -1,4 +1,0 @@
-name: RatTranslate
-version: @version@
-main: io.github.ranolp.rattranslate.RatTranslateBungeeCord
-description: Universal translate plugin
