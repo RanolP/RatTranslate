@@ -39,6 +39,6 @@ artifacts {
 task prepareUpload(type: Copy, dependsOn: ['build']) {
     from "$buildDir/libs"
     into "$buildDir/libs"
-    include "rattranslate-${project.version}.jar"
-    rename "rattranslate-${project.version}.jar", 'RatTranslate.jar'
+    include "rattranslate-spigot-${project.version}.jar"
+    rename "rattranslate-spigot-${project.version}.jar", 'RatTranslate-Spigot.jar'
 }

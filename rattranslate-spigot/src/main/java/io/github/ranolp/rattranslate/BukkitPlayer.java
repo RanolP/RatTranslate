@@ -1,6 +1,10 @@
 package io.github.ranolp.rattranslate;
 
 
+import io.github.ranolp.rattranslate.json.BungeeJsonSender;
+import io.github.ranolp.rattranslate.json.JsonSender;
+import io.github.ranolp.rattranslate.json.NoJsonSender;
+import io.github.ranolp.rattranslate.json.TellrawJsonSender;
 import io.github.ranolp.rattranslate.locale.LocaleDelegate;
 import io.github.ranolp.rattranslate.locale.ReflectionLocaleDelegate;
 import io.github.ranolp.rattranslate.locale.SimpleLocaleDelegate;
@@ -17,6 +21,7 @@ import java.util.Optional;
 public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstraction.Player implements ConfigurationSerializable {
   static final Map<String, BukkitPlayer> PLAYER_MAP = new HashMap<>();
   private static final LocaleDelegate DELEGATE;
+  private static final JsonSender SENDER;
 
   static {
     LocaleDelegate delegate = ReflectionLocaleDelegate.getInstance();
@@ -26,7 +31,18 @@ public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstractio
     } catch (NoSuchMethodException e) {
       // ignore, getLocale method not supported
     }
+    JsonSender sender = NoJsonSender.INSTANCE;
+    if (RatTranslate.getInstance().getPlatform().isJsonMessageAvailable()) {
+      sender = TellrawJsonSender.INSTANCE;
+      try {
+        Class.forName("net.md_5.bungee.api.chat.TextComponent");
+        sender = BungeeJsonSender.INSTANCE;
+      } catch (ClassNotFoundException e) {
+        // ignore, getLocale method not supported
+      }
+    }
     DELEGATE = delegate;
+    SENDER = sender;
   }
 
   private String nickname;
@@ -65,13 +81,7 @@ public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstractio
 
   @Override
   public void sendHoverableMessage(String message, String onHover) {
-    if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format(
-        "tellraw %s {\"text\":\"%s\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"%s\",\"italic\":true,\"color\":\"gray\"}}}",
-        nickname, ChatColor.translateAlternateColorCodes('&', message),
-        ChatColor.translateAlternateColorCodes('&', onHover)))) {
-      // fail fallback
-      sendMessage(message);
-    }
+    SENDER.sendMessage(this, message, onHover);
   }
 
   @Override

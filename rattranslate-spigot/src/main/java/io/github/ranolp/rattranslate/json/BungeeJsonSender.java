@@ -1,8 +1,8 @@
 package io.github.ranolp.rattranslate.json;
 
 import io.github.ranolp.rattranslate.BukkitPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public final class BungeeJsonSender implements JsonSender {
   private BungeeJsonSender() {
@@ -12,13 +12,10 @@ public final class BungeeJsonSender implements JsonSender {
 
   @Override
   public void sendMessage(BukkitPlayer target, String message, String onHover) {
-
-    if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format(
-        "tellraw %s {\"text\":\"%s\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"%s\",\"italic\":true,\"color\":\"gray\"}}}",
-        target.getNickname(), ChatColor.translateAlternateColorCodes('&', message),
-        ChatColor.translateAlternateColorCodes('&', onHover)))) {
-      // fail fallback
-      target.sendMessage(message);
-    }
+    TextComponent component = new TextComponent(ChatColor.translateAlternateColorCodes('&', message));
+    TextComponent hover = new TextComponent(ChatColor.translateAlternateColorCodes('&', onHover));
+    hover.setItalic(true);
+    hover.setColor(ChatColor.GRAY);
+    target.getPlayer().ifPresent(player -> player.spigot().sendMessage(component));
   }
 }

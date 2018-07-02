@@ -23,6 +23,11 @@ public class AnyType implements VariableType {
   }
 
   @Override
+  public boolean isSupported(VariableType type) {
+    return true;
+  }
+
+  @Override
   public VariableFormatter getDefaultFormatter(Locale locale) {
     return FORMATTER;
   }

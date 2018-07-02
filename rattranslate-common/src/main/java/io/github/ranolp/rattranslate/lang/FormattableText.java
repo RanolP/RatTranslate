@@ -164,7 +164,7 @@ public class FormattableText {
       Variable variable = variables.stream()
           .filter(Variable::isNamed)
           .filter(v -> v.isNameEquals(name))
-          .filter(v -> type == null || v.getType().equals(type))
+          .filter(v -> type == null || type.isSupported(v.getType()))
           .findFirst()
           .orElse(Variable.NOTHING);
       return (type != null ? type : variable.getType()).getDefaultFormatter(locale).format(variable);

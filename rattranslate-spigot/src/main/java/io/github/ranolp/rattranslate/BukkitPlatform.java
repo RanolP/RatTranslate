@@ -13,14 +13,14 @@ import java.util.ArrayList;
 
 final class BukkitPlatform extends Platform {
   private final File dataFile;
-  private RatTranslateBukkit plugin;
+  private RatTranslateSpigot plugin;
   private BukkitConfiguration configurationSection;
   // todo: how to get?
   private boolean jsonMessageAvailable = true;
   private YamlConfiguration dataConfiguration;
 
 
-  BukkitPlatform(RatTranslateBukkit plugin) {
+  BukkitPlatform(RatTranslateSpigot plugin) {
     this.plugin = plugin;
     dataFile = new File(plugin.getDataFolder(), "data.yml");
   }

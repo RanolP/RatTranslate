@@ -11,6 +11,7 @@ import io.github.ranolp.rattranslate.config.Configuration;
 import io.github.ranolp.rattranslate.event.PlatformDisableEvent;
 import io.github.ranolp.rattranslate.event.PlatformReadyEvent;
 import io.github.ranolp.rattranslate.event.command.CommandIssueEvent;
+import io.github.ranolp.rattranslate.event.command.CommandTabCompleteEvent;
 import io.github.ranolp.rattranslate.lang.Lang;
 import io.github.ranolp.rattranslate.lang.LangStorage;
 import io.github.ranolp.rattranslate.lang.Variable;
@@ -126,6 +127,15 @@ public class RatTranslate {
   public void onCommandReceived(CommandIssueEvent e) {
     if (commandMap.containsKey(e.getLabel())) {
       commandMap.get(e.getLabel()).onCommand(e.getPlayer(), e.getLabel(), e.getArgs());
+    }
+  }
+
+  @Subscribe
+  @AllowConcurrentEvents
+  public void onTabCompleteRecevied(CommandTabCompleteEvent e) {
+    if (commandMap.containsKey(e.getLabel())) {
+      List<String> result = commandMap.get(e.getLabel()).onTabComplete(e.getPlayer(), e.getLabel(), e.getArgs());
+      e.setCompletions(result);
     }
   }
 

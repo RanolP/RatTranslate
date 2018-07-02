@@ -5,16 +5,24 @@ import io.github.ranolp.rattranslate.RatTranslate;
 import io.github.ranolp.rattranslate.abstraction.Player;
 import io.github.ranolp.rattranslate.lang.Variable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LanguageCommand implements Command {
+  private List<String> localeCodes = Arrays.stream(Locale.values()).
+      map(Locale::getCode).
+      map(String::toLowerCase).
+      collect(Collectors.toList());
+
   @Override
   public void onCommand(Player player, String label, String[] args) {
     if (args.length == 0) {
 
     } else {
-      switch (args[0]) {
+      switch (args[0].toLowerCase()) {
         case "reset":
           player.setCustomLocale(null);
           player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.reset-locale");
@@ -42,14 +50,14 @@ public class LanguageCommand implements Command {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.page-column",
                 Variable.ofAny("language", "name",
                     player.format(RatTranslate.getInstance().getLangStorage(),
-                        "lang." + values.get(i).toPropertiesKey())),
+                        values.get(i).toPropertiesKey())),
                 Variable.ofAny("language", "code", values.get(i).getCode()));
           }
           if (page == maxPage) {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.page-footer-end");
           } else {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.page-footer",
-                Variable.ofAny("command", "command", "/" + label + " " + (page + 1)));
+                Variable.ofAny("command", "command", label + " list " + (page + 1)));
           }
           break;
         case "set":
@@ -68,7 +76,7 @@ public class LanguageCommand implements Command {
           player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.set-locale.success",
               Variable.ofAny("new", "language",
                   player.format(RatTranslate.getInstance().getLangStorage(),
-                      "lang." + locale.toPropertiesKey()) +
+                      locale.toPropertiesKey()) +
                       " (" +
                       locale.getCode() +
                       ")"));
@@ -79,6 +87,16 @@ public class LanguageCommand implements Command {
 
   @Override
   public List<String> onTabComplete(Player player, String label, String[] args) {
-    return null;
+    if (args.length == 1) {
+      List<String> result = new ArrayList<>(Arrays.asList("reset", "list", "set"));
+      result.removeIf(it -> !it.startsWith(args[0].toLowerCase()));
+      return result;
+    } else if (args.length == 2 && args[0].equalsIgnoreCase("set")) {
+      List<String> result = new ArrayList<>(localeCodes);
+      result.removeIf(it -> !it.startsWith(args[1].toLowerCase()));
+      return result;
+    } else {
+      return Collections.emptyList();
+    }
   }
 }
