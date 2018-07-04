@@ -20,7 +20,9 @@ public class LanguageCommand implements Command {
   @Override
   public void onCommand(Player player, String label, String[] args) {
     if (args.length == 0) {
-
+      Locale locale = player.getLocale();
+      player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.show-locale",
+          Variable.ofAny("lang", "lang", locale.getName() + "(" + locale.getCode() + ")"));
     } else {
       switch (args[0].toLowerCase()) {
         case "reset":

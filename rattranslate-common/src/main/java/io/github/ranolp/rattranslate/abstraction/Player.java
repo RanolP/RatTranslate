@@ -3,51 +3,53 @@ package io.github.ranolp.rattranslate.abstraction;
 import io.github.ranolp.rattranslate.Locale;
 import io.github.ranolp.rattranslate.RatTranslate;
 
+import java.util.Optional;
+
 public abstract class Player implements MessageReceiver {
-  private boolean translateMode = true;
-  private Locale customLocale = null;
+    private boolean translateMode = true;
+    private Locale customLocale = null;
 
-  public abstract String getDisplayName();
+    public abstract String getDisplayName();
 
-  public abstract Locale getRealLocale();
+    public abstract Locale getRealLocale();
 
-  public abstract boolean isOnline();
+    public abstract boolean isOnline();
 
-  public final Locale getLocale() {
-    return getCustomLocale() != null ? getCustomLocale() : getRealLocale();
-  }
-
-  /**
-   * Send hoverable message if it supported.
-   *
-   * @param message - The text to see on chat.
-   * @param onHover - The text to see on hover.
-   */
-  public abstract void sendHoverableMessage(String message, String onHover);
-
-  public boolean getTranslateMode() {
-    return translateMode;
-  }
-
-  public void setTranslateMode(boolean useTranslate) {
-    this.translateMode = useTranslate;
-    if (useTranslate) {
-      sendMessage(RatTranslate.getInstance().getLangStorage(), "chat.translate.start");
-    } else {
-      sendMessage(RatTranslate.getInstance().getLangStorage(), "chat.translate.stop");
+    public final Locale getLocale() {
+        return getCustomLocale().orElse(getRealLocale());
     }
-  }
 
-  @Override
-  public boolean canReceiveMessage() {
-    return isOnline();
-  }
+    /**
+     * Send hoverable message if it supported.
+     *
+     * @param message - The text to see on chat.
+     * @param onHover - The text to see on hover.
+     */
+    public abstract void sendHoverableMessage(String message, String onHover);
 
-  public Locale getCustomLocale() {
-    return customLocale;
-  }
+    public boolean getTranslateMode() {
+        return translateMode;
+    }
 
-  public void setCustomLocale(Locale customLocale) {
-    this.customLocale = customLocale;
-  }
+    public void setTranslateMode(boolean useTranslate) {
+        this.translateMode = useTranslate;
+        if (useTranslate) {
+            sendMessage(RatTranslate.getInstance().getLangStorage(), "chat.translate.start");
+        } else {
+            sendMessage(RatTranslate.getInstance().getLangStorage(), "chat.translate.stop");
+        }
+    }
+
+    @Override
+    public boolean canReceiveMessage() {
+        return isOnline();
+    }
+
+    public Optional<Locale> getCustomLocale() {
+        return Optional.ofNullable(customLocale);
+    }
+
+    public void setCustomLocale(Locale customLocale) {
+        this.customLocale = customLocale;
+    }
 }

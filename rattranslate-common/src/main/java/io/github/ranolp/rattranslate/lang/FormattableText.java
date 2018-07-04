@@ -18,8 +18,7 @@ public class FormattableText {
     String name = null;
     String type = null;
     String formatter = null;
-    for (int i = 0; i < chars.length; i++) {
-      char c = chars[i];
+    for (char c: chars) {
       if (escape) {
         escape = false;
         builder.append(c);
