@@ -99,7 +99,7 @@ public final class BukkitPlayer extends io.github.ranolp.rattranslate.abstractio
     Map<String, Object> result = new HashMap<>();
     result.put("nickname", nickname);
     result.put("translate", getTranslateMode());
-    result.put("custom-locale", getCustomLocale() != null ? getCustomLocale().getCode() : null);
+    result.put("custom-locale", getCustomLocale().map(Locale::getCode).orElse(null));
     return result;
   }
 
