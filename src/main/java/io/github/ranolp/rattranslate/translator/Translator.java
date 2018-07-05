@@ -4,13 +4,13 @@ import io.github.ranolp.rattranslate.BukkitConfiguration;
 import io.github.ranolp.rattranslate.Locale;
 
 public interface Translator {
-  void applyConfiguration(BukkitConfiguration section);
+    void applyConfiguration(BukkitConfiguration section);
 
-  boolean isLocaleSupported(Locale locale);
+    boolean isLocaleSupported(Locale locale);
 
-  boolean isAutoSupported();
+    boolean isAutoSupported();
 
-  String translate(String sentences, Locale from, Locale to);
+    String translate(String sentences, Locale from, Locale to);
 
-  String translateAuto(String sentences, Locale to);
+    String translateAuto(String sentences, Locale to);
 }

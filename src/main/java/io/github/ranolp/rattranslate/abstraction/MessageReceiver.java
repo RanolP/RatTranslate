@@ -10,57 +10,57 @@ import java.util.Collections;
 import java.util.List;
 
 public interface MessageReceiver {
-  Locale getLocale();
+    Locale getLocale();
 
-  void sendMessage(String message);
+    void sendMessage(String message);
 
-  boolean canReceiveMessage();
+    boolean canReceiveMessage();
 
-  default void sendMessage(LangStorage storage, String key, List<Variable> variables) {
-    if (canReceiveMessage()) {
-      sendMessage(format(storage.get(getLocale(), key), variables));
+    default void sendMessage(LangStorage storage, String key, List<Variable> variables) {
+        if (canReceiveMessage()) {
+            sendMessage(format(storage.get(getLocale(), key), variables));
+        }
     }
-  }
 
-  default void sendMessage(LangStorage storage, String key, Variable... variables) {
-    if (canReceiveMessage()) {
-      sendMessage(format(storage.get(getLocale(), key), Arrays.asList(variables)));
+    default void sendMessage(LangStorage storage, String key, Variable... variables) {
+        if (canReceiveMessage()) {
+            sendMessage(format(storage.get(getLocale(), key), Arrays.asList(variables)));
+        }
     }
-  }
 
-  default void sendMessage(FormattableText text, Variable... variables) {
-    if (canReceiveMessage()) {
-      sendMessage(format(text, Arrays.asList(variables)));
+    default void sendMessage(FormattableText text, Variable... variables) {
+        if (canReceiveMessage()) {
+            sendMessage(format(text, Arrays.asList(variables)));
+        }
     }
-  }
 
-  default void sendMessage(FormattableText text, List<Variable> variables) {
-    if (canReceiveMessage()) {
-      sendMessage(format(text, variables));
+    default void sendMessage(FormattableText text, List<Variable> variables) {
+        if (canReceiveMessage()) {
+            sendMessage(format(text, variables));
+        }
     }
-  }
 
-  default String format(LangStorage storage, String key) {
-    return format(storage.get(getLocale(), key), Collections.emptyList());
-  }
+    default String format(LangStorage storage, String key) {
+        return format(storage.get(getLocale(), key), Collections.emptyList());
+    }
 
-  default String format(LangStorage storage, String key, List<Variable> variables) {
-    return format(storage.get(getLocale(), key), variables);
-  }
+    default String format(LangStorage storage, String key, List<Variable> variables) {
+        return format(storage.get(getLocale(), key), variables);
+    }
 
-  default String format(LangStorage storage, String key, Variable... variables) {
-    return format(storage.get(getLocale(), key), Arrays.asList(variables));
-  }
+    default String format(LangStorage storage, String key, Variable... variables) {
+        return format(storage.get(getLocale(), key), Arrays.asList(variables));
+    }
 
-  default String format(FormattableText text) {
-    return text.format(Collections.emptyList(), getLocale());
-  }
+    default String format(FormattableText text) {
+        return text.format(Collections.emptyList(), getLocale());
+    }
 
-  default String format(FormattableText text, List<Variable> variables) {
-    return text.format(variables, getLocale());
-  }
+    default String format(FormattableText text, List<Variable> variables) {
+        return text.format(variables, getLocale());
+    }
 
-  default String format(FormattableText text, Variable... variables) {
-    return text.format(Arrays.asList(variables), getLocale());
-  }
+    default String format(FormattableText text, Variable... variables) {
+        return text.format(Arrays.asList(variables), getLocale());
+    }
 }
