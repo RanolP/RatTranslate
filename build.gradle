@@ -44,6 +44,7 @@ dependencies {
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
+        filteringCharset = 'UTF-8'
         filter ReplaceTokens, tokens: [version: project.version]
     }
 }

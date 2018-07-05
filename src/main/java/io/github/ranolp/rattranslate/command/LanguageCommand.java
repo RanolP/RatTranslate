@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LanguageCommand implements TabExecutor {
-    private List<String> localeCodes = Arrays.stream(Locale.values()).
-            map(Locale::getCode).
-                                                     map(String::toLowerCase).
-                                                     collect(Collectors.toList());
+    private List<String> localeCodes = Arrays.stream(Locale.values())
+                                             .map(Locale::getCode)
+                                             .map(String::toLowerCase)
+                                             .collect(Collectors.toList());
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -36,7 +36,9 @@ public class LanguageCommand implements TabExecutor {
             return false;
         }
         if (localeCodes.contains(args[0].toLowerCase())) {
-            player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.lang.set.failed");
+            player.sendMessage(RatTranslate.getInstance().getLangStorage(),
+                    "command.lang.set.failed",
+                    Variable.ofAny("alternative", "command", "/" + label + " set " + args[0]));
             return false;
         }
         switch (args[0].toLowerCase()) {
