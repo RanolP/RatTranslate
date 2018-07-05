@@ -12,6 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class ChatListener implements Listener {
@@ -36,29 +37,23 @@ public class ChatListener implements Listener {
         String message = e.getMessage();
         boolean auto = translator.isAutoSupported() && player.getLocale().isAmbiguousSentence(message);
 
-        Map<Locale, String> translateMap = recipients.
-                                                             stream().
-                                                             map(RatPlayer::getLocale).
-                                                             distinct().
-                                                             collect(Collectors.toMap(locale -> locale,
-                                                                                      locale -> String.format(
-                                                                                              e.getFormat(),
-                                                                                              player.getDisplayName(),
-                                                                                              auto
-                                                                                                      ? translator.translateAuto(
-                                                                                                      message, locale)
-                                                                                                      : translator.translate(
-                                                                                                              message,
-                                                                                                              player.getLocale(),
-                                                                                                              locale))));
+        Collector<Locale, ?, Map<Locale, String>> collector = Collectors.toMap(locale -> locale,
+                locale -> String.format(e.getFormat(),
+                        player.getDisplayName(),
+                        auto
+                        ? translator.translateAuto(message, locale)
+                        : translator.translate(message, player.getLocale(), locale)));
+
+        Map<Locale, String> translateMap = recipients.stream().map(RatPlayer::getLocale).distinct().collect(collector);
         for (RatPlayer recipient: recipients) {
             String translated = translateMap.get(recipient.getLocale());
             if (RatTranslate.getInstance().isJsonMessageAvailable()) {
-                String hover = recipient.format(langStorage, "chat.original",
-                                                Variable.ofAny("hover", "text", e.getMessage()),
-                                                Variable.ofAny("hover", "lang", recipient.format(langStorage,
-                                                                                                 player.getLocale()
-                                                                                                       .toPropertiesKey())));
+                String hover = recipient.format(langStorage,
+                        "chat.original",
+                        Variable.ofAny("hover", "text", e.getMessage()),
+                        Variable.ofAny("hover",
+                                "lang",
+                                recipient.format(langStorage, player.getLocale().toPropertiesKey())));
                 recipient.sendHoverableMessage(translated, hover);
             } else {
                 recipient.sendMessage(translated);

@@ -25,7 +25,7 @@ public class LangStorage {
 
     public FormattableText get(Locale locale, String key) {
         return langs.containsKey(locale)
-                ? langs.get(locale).getOptional(key).orElse(langs.get(defaultLocale).get(key))
-                : langs.get(defaultLocale).get(key);
+               ? langs.get(locale).getOptional(key).orElse(langs.get(defaultLocale).get(key))
+               : langs.get(defaultLocale).get(key);
     }
 }

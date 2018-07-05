@@ -52,8 +52,8 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
                 if (!new File("lang_" + locale.getCode() + ".lang").exists()) {
                     saveResource("lang_" + locale.getCode() + ".properties", true);
                 }
-                registerLang(
-                        LangLoader.load(new File(getDataFolder(), "lang_" + locale.getCode() + ".properties"), locale));
+                registerLang(LangLoader.load(new File(getDataFolder(), "lang_" + locale.getCode() + ".properties"),
+                        locale));
             }
         }
 
@@ -64,8 +64,10 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
 
         // ok, it's ready!
         reload();
-        sendMessage(langStorage, "server.platform.ready", Variable.ofAny("platform", "version", getVersion()),
-                    Variable.ofAny("game", "version", getGameVersion()));
+        sendMessage(langStorage,
+                "server.platform.ready",
+                Variable.ofAny("platform", "version", getVersion()),
+                Variable.ofAny("game", "version", getGameVersion()));
         if (isJsonMessageAvailable()) {
             sendMessage(langStorage, "server.json.ok");
         } else {
@@ -76,8 +78,10 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
     @Override
     public void onDisable() {
         save();
-        sendMessage(langStorage, "server.platform.disable", Variable.ofAny("platform", "version", getVersion()),
-                    Variable.ofAny("game", "version", getGameVersion()));
+        sendMessage(langStorage,
+                "server.platform.disable",
+                Variable.ofAny("platform", "version", getVersion()),
+                Variable.ofAny("game", "version", getGameVersion()));
     }
 
     /**

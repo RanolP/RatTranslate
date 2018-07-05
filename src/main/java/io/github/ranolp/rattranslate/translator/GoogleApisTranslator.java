@@ -133,8 +133,8 @@ public class GoogleApisTranslator implements Translator {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),
+                    StandardCharsets.UTF_8))) {
                 StringBuilder response = new StringBuilder();
                 String data;
                 while ((data = reader.readLine()) != null) {
