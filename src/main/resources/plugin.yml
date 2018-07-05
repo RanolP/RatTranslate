@@ -1,6 +1,6 @@
 name: RatTranslate
 version: @version@
-main: io.github.ranolp.rattranslate.RatTranslateSpigot
+main: io.github.ranolp.rattranslate.RatTranslate
 authors: [Ranol_]
 description: Universal translate plugin
 commands:
