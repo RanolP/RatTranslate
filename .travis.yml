@@ -17,7 +17,7 @@ deploy:
   provider: releases
   api_key:
     secure: dX1hD0+QU/K4JgQ7wYF+SFEI6eMaTILIxSY/9qITIjoxJKSFDlOx1B5Mer1RFa33E5UnM+1CeP++AYQ19xcZ7mQvSnjuu07P8/lNDFkaSUFaXBJBsSem6c0HEL/WIRgRzUytl2Uq5oA5uPtxi6hcOr3d8oeYzX7/EV49goP9PDiS5Kz3psQNatOJjFA40Xb+PH2CvfttPMuvrmO/A5URdv4tSnRKdN/u/a2iYQwFBvYfO03cLUsNTgNb6zbaF7G6R12V6HiBcAm0QRjgCrX6p6l50jerT9koq3Pp1zLmOAFNUWP+fbj9VYxNenpIa7O7oUBDC/t58qY7I0a8KuhTm5wi/PXSuKrkgYz2klPjgQEHiSm5e/r1VkZvkJxluLsTMVpgQJGQ++Wy1rKNNEXWXgSXeNxaZHCqsOoZxVe3Mj5kxVtzBHBC0Q7XjPSss4j9Yuwm7VHDKWGXpFlWaItvDFKO1a4SNbY5STHh3bLUceaax9BW6M8zX+QmxFzEcUXGFfWx8vv4jMMFjXKShItYaW5YzjPgX4P2pYIBiHFn2bgB7xtZTjTdcnD0SOFOS7YL6DAgEt2IY0gQb8PbpLXgwJD5UKy/ObGXXbhsbUjn8U7wCfBJpu73ggwP0iSMoVCR+9PEQalI7ztvtXrKFykPDryvs+gRt9e9TX5emRSiwCs=
-  file: 'rattranslate-spigot/build/libs/RatTranslate-Spigot.jar'
+  file: 'build/libs/RatTranslate.jar'
   skip_cleanup: true
   on:
     repo: RanolP/RatTranslate
