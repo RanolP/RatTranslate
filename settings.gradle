@@ -1,3 +1,2 @@
 rootProject.name = 'rattranslate'
 
-include 'rattranslate-common', 'rattranslate-spigot', 'rattranslate-sponge'
