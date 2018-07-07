@@ -7,6 +7,7 @@ import io.github.ranolp.rattranslate.util.GsonUtil;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,6 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class PapagoTranslator implements Translator {
+
+    private PapagoTranslator() {
+    }
 
     public static PapagoTranslator getInstance() {
         return PapagoTranslator.SingletonHolder.INSTANCE;
@@ -77,12 +81,7 @@ public class PapagoTranslator implements Translator {
             dos.writeBytes(postParams);
             dos.flush();
             dos.close();
-            BufferedReader br;
-            if(connection.getResponseCode() == 200) {
-                br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            } else {
-                br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
-            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
             String line;
             StringBuilder response = new StringBuilder();
             while((line = br.readLine()) != null) {
@@ -90,13 +89,9 @@ public class PapagoTranslator implements Translator {
             }
             br.close();
             JsonElement element = GsonUtil.parse(response.toString());
-            try {
-                return element.getAsJsonObject().get("translatedText").getAsString();
-            } catch(NullPointerException ex) {
-                return null;
-            }
-        } catch(Exception ex) {
-            ex.printStackTrace();
+            return element.getAsJsonObject().get("translatedText").getAsString();
+        } catch(IOException | IllegalStateException | IndexOutOfBoundsException |
+                UnsupportedOperationException | NullPointerException ignore) {
         }
         return null;
     }
