@@ -1,9 +1,6 @@
 package io.github.ranolp.rattranslate;
 
-import io.github.ranolp.rattranslate.translator.GoogleApisTranslator;
-import io.github.ranolp.rattranslate.translator.KakaoTranslator;
-import io.github.ranolp.rattranslate.translator.PapagoTranslator;
-import io.github.ranolp.rattranslate.translator.Translator;
+import io.github.ranolp.rattranslate.translator.*;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -94,5 +91,10 @@ public class EnglishKoreanTranslateTest {
     @Test
     public void kakao() {
         test(KakaoTranslator.getInstance());
+    }
+
+    @Test
+    public void kakaoAutoable() {
+        test(new AutoableTranslator(KakaoTranslator.getInstance()));
     }
 }

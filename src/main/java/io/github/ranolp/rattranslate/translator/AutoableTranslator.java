@@ -9,6 +9,13 @@ import java.util.Set;
 public class AutoableTranslator implements Translator {
     private Translator real = NopTranslator.getInstance();
 
+    public AutoableTranslator() {
+    }
+
+    public AutoableTranslator(Translator real) {
+        this.real = real;
+    }
+
     @Override
     public void applyConfiguration(BukkitConfiguration section) {
         section.getString("instance").ifPresent(name -> {
