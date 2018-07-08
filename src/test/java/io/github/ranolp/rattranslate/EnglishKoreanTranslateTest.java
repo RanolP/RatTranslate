@@ -7,6 +7,41 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EnglishKoreanTranslateTest {
+    private List<AbstractTestCase> testCases = Arrays.asList(
+            new TestCase("Hello", Locale.KOREAN, Locale.AMERICAN_ENGLISH),
+            new TestCase("안녕", Locale.AMERICAN_ENGLISH, Locale.KOREAN),
+
+            new AutoTestCase("Hello", Locale.KOREAN),
+            new AutoTestCase("안녕", Locale.AMERICAN_ENGLISH)
+    );
+
+    private void test(Translator translator) {
+        String name = translator.getClass().getSimpleName();
+        for (AbstractTestCase testCase : testCases) {
+            System.out.println(name + ": " + testCase.translate(translator));
+        }
+    }
+
+    @Test
+    public void google() {
+        test(GoogleApisTranslator.getInstance());
+    }
+
+    @Test
+    public void papago() {
+        test(PapagoTranslator.getInstance());
+    }
+
+    @Test
+    public void kakao() {
+        test(KakaoTranslator.getInstance());
+    }
+
+    @Test
+    public void kakaoAutoable() {
+        test(new AutoableTranslator(KakaoTranslator.getInstance()));
+    }
+
     private abstract class AbstractTestCase {
         protected final String sentence;
         protected final Locale output;
@@ -61,40 +96,5 @@ public class EnglishKoreanTranslateTest {
             }
             return String.format("%s (Auto, original : %s)", translator.translateAuto(sentence, output), sentence);
         }
-    }
-
-    private List<AbstractTestCase> testCases = Arrays.asList(
-            new TestCase("Hello", Locale.KOREAN, Locale.AMERICAN_ENGLISH),
-            new TestCase("안녕", Locale.AMERICAN_ENGLISH, Locale.KOREAN),
-
-            new AutoTestCase("Hello", Locale.KOREAN),
-            new AutoTestCase("안녕", Locale.AMERICAN_ENGLISH)
-    );
-
-    private void test(Translator translator) {
-        String name = translator.getClass().getSimpleName();
-        for (AbstractTestCase testCase : testCases) {
-            System.out.println(name + ": " + testCase.translate(translator));
-        }
-    }
-
-    @Test
-    public void google() {
-        test(GoogleApisTranslator.getInstance());
-    }
-
-    @Test
-    public void papago() {
-        test(PapagoTranslator.getInstance());
-    }
-
-    @Test
-    public void kakao() {
-        test(KakaoTranslator.getInstance());
-    }
-
-    @Test
-    public void kakaoAutoable() {
-        test(new AutoableTranslator(KakaoTranslator.getInstance()));
     }
 }

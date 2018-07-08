@@ -12,12 +12,12 @@ public final class TellrawJsonSender implements JsonSender {
 
     @Override
     public void sendMessage(RatPlayer target, String message, String onHover) {
-        if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                String.format(
-                        "tellraw %s {\"text\":\"%s\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"%s\",\"italic\":true,\"color\":\"gray\"}}}",
-                        target.getNickname(),
-                        ChatColor.translateAlternateColorCodes('&', message),
-                        ChatColor.translateAlternateColorCodes('&', onHover)))) {
+        if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format(
+                "tellraw %s {\"text\":\"%s\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"%s\",\"italic\":true,\"color\":\"gray\"}}}",
+                target.getNickname(),
+                ChatColor.translateAlternateColorCodes('&', message),
+                ChatColor.translateAlternateColorCodes('&', onHover)
+        ))) {
             // fail fallback
             target.sendMessage(message);
         }

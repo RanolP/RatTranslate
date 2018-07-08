@@ -18,7 +18,7 @@ public class FormattableText {
         String name = null;
         String type = null;
         String formatter = null;
-        for (char c: chars) {
+        for (char c : chars) {
             if (escape) {
                 escape = false;
                 builder.append(c);
@@ -111,7 +111,7 @@ public class FormattableText {
 
     public String format(List<Variable> variables, Locale locale) {
         StringBuilder result = new StringBuilder();
-        for (Node node: nodes) {
+        for (Node node : nodes) {
             result.append(node.format(variables, locale));
         }
         return result.toString();

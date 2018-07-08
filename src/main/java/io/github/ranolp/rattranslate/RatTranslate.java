@@ -47,13 +47,14 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
 
         saveDefaultConfig();
 
-        for (Locale locale: Locale.values()) {
+        for (Locale locale : Locale.values()) {
             if (getResource("lang_" + locale.getCode() + ".properties") != null) {
                 if (!new File("lang_" + locale.getCode() + ".lang").exists()) {
                     saveResource("lang_" + locale.getCode() + ".properties", true);
                 }
                 registerLang(LangLoader.load(new File(getDataFolder(), "lang_" + locale.getCode() + ".properties"),
-                        locale));
+                        locale
+                ));
             }
         }
 
@@ -67,7 +68,8 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
         sendMessage(langStorage,
                 "server.platform.ready",
                 Variable.ofAny("platform", "version", getVersion()),
-                Variable.ofAny("game", "version", getGameVersion()));
+                Variable.ofAny("game", "version", getGameVersion())
+        );
         if (isJsonMessageAvailable()) {
             sendMessage(langStorage, "server.json.ok");
         } else {
@@ -81,7 +83,8 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
         sendMessage(langStorage,
                 "server.platform.disable",
                 Variable.ofAny("platform", "version", getVersion()),
-                Variable.ofAny("game", "version", getGameVersion()));
+                Variable.ofAny("game", "version", getGameVersion())
+        );
     }
 
     /**
@@ -122,7 +125,7 @@ public final class RatTranslate extends JavaPlugin implements MessageReceiver {
         List<Translator> translators = new ArrayList<>();
         serverLocale = section.getString("language").map(Locale::getByCode).orElse(Locale.AMERICAN_ENGLISH);
         section.getSection("translator").ifPresent(translatorSection -> {
-            for (String key: translatorSection.getKeys(false)) {
+            for (String key : translatorSection.getKeys(false)) {
                 translatorSection.getSection(key).ifPresent(configuration -> {
                     if (configuration.getBoolean("use").orElse(true)) {
                         Translators.get(key).ifPresent(translator -> {

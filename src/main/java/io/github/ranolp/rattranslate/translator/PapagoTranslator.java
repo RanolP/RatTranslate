@@ -84,8 +84,7 @@ public class PapagoTranslator implements Translator {
             dos.writeBytes(postParams);
             dos.flush();
             dos.close();
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream(),
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(),
                     StandardCharsets.UTF_8
             ));
             String line;
