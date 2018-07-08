@@ -12,9 +12,35 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PapagoTranslator implements Translator {
+    private final Set<Locale> supportedLocales = new HashSet<>(Arrays.asList(Locale.KOREAN,
+            Locale.AMERICAN_ENGLISH,
+            Locale.JAPANESE,
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.SPANISH,
+            Locale.ARGENTINIAN_SPANISH,
+            Locale.MEXICAN_SPANISH,
+            Locale.URUGUAYAN_SPANISH,
+            Locale.VENEZUELAN_SPANISH,
+            Locale.FRENCH,
+            Locale.CANADIAN_FRENCH,
+            Locale.GERMAN,
+            Locale.AUSTRIAN_GERMAN,
+            Locale.LOW_GERMAN,
+            Locale.SWABIAN_GERMAN,
+            Locale.RUSSIAN,
+            Locale.PORTUGUESE,
+            Locale.VIETNAMESE,
+            Locale.THAI,
+            Locale.INDONESIAN,
+            Locale.HINDI
+    ));
 
     private PapagoTranslator() {
     }
@@ -28,33 +54,8 @@ public class PapagoTranslator implements Translator {
     }
 
     @Override
-    public boolean isLocaleSupported(Locale locale) {
-        switch(locale) {
-            case KOREAN:
-            case AMERICAN_ENGLISH:
-            case JAPANESE:
-            case SIMPLIFIED_CHINESE:
-            case TRADITIONAL_CHINESE:
-            case SPANISH:
-            case ARGENTINIAN_SPANISH:
-            case MEXICAN_SPANISH:
-            case URUGUAYAN_SPANISH:
-            case VENEZUELAN_SPANISH:
-            case FRENCH:
-            case CANADIAN_FRENCH:
-            case GERMAN:
-            case AUSTRIAN_GERMAN:
-            case LOW_GERMAN:
-            case SWABIAN_GERMAN:
-            case RUSSIAN:
-            case PORTUGUESE:
-            case VIETNAMESE:
-            case THAI:
-            case INDONESIAN:
-            case HINDI:
-                return true;
-        }
-        return false;
+    public Set<Locale> getSupportedLocales() {
+        return supportedLocales;
     }
 
     @Override
@@ -63,7 +64,7 @@ public class PapagoTranslator implements Translator {
     }
 
     public String translate(String sentences, String from, String to) {
-        if(from.equals(to)) {
+        if (from.equals(to)) {
             return sentences;
         }
         try {
@@ -75,23 +76,27 @@ public class PapagoTranslator implements Translator {
             connection.addRequestProperty("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
             String base = "rlWxnJA0Vwc0paIyLCJkaWN0RGlzcGxheSI6NSwic291cmNlIjoi";
             String str = String.format("%s\",\"target\":\"%s\",\"text\":\"%s\"}", from, to, sentences);
-            String postParams = "data=" + base + Base64.getEncoder().encodeToString(str.getBytes(StandardCharsets.UTF_8));
+            String postParams = "data=" +
+                                base +
+                                Base64.getEncoder().encodeToString(str.getBytes(StandardCharsets.UTF_8));
             connection.setDoOutput(true);
             DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
             dos.writeBytes(postParams);
             dos.flush();
             dos.close();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream(),
+                    StandardCharsets.UTF_8
+            ));
             String line;
             StringBuilder response = new StringBuilder();
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 response.append(line);
             }
             br.close();
             JsonElement element = GsonUtil.parse(response.toString());
             return element.getAsJsonObject().get("translatedText").getAsString();
-        } catch(IOException | IllegalStateException | IndexOutOfBoundsException |
-                UnsupportedOperationException | NullPointerException ignore) {
+        } catch (IOException | IllegalStateException | IndexOutOfBoundsException | UnsupportedOperationException | NullPointerException ignore) {
         }
         return null;
     }

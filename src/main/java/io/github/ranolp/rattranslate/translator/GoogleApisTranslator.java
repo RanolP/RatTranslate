@@ -12,8 +12,92 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GoogleApisTranslator implements Translator {
+    private final Set<Locale> supportedLocales = new HashSet<>(Arrays.asList(Locale.AFRIKAANS,
+            Locale.ARABIC,
+            Locale.AZERBAIJANI,
+            Locale.BELARUSIAN,
+            Locale.BULGARIAN,
+            Locale.CATALAN,
+            Locale.CZECH,
+            Locale.WELSH,
+            Locale.DANISH,
+            Locale.AUSTRIAN_GERMAN,
+            Locale.GERMAN,
+            Locale.GREEK,
+            Locale.AUSTRALIAN_ENGLISH,
+            Locale.CANADIAN_ENGLISH,
+            Locale.BRITISH_ENGLISH,
+            Locale.NEW_ZEALAND_ENGLISH,
+            Locale.PIRATE_ENGLISH,
+            Locale.AMERICAN_ENGLISH,
+            Locale.ESPERANTO,
+            Locale.ARGENTINIAN_SPANISH,
+            Locale.SPANISH,
+            Locale.MEXICAN_SPANISH,
+            Locale.URUGUAYAN_SPANISH,
+            Locale.VENEZUELAN_SPANISH,
+            Locale.ESTONIAN,
+            Locale.BASQUE,
+            Locale.PERSIAN,
+            Locale.FINNISH,
+            Locale.FILIPINO,
+            Locale.FRENCH,
+            Locale.CANADIAN_FRENCH,
+            Locale.FRISIAN,
+            Locale.IRISH,
+            Locale.SCOTTISH_GAELIC,
+            Locale.GALICIAN,
+            Locale.HAWAIIAN,
+            Locale.HEBREW,
+            Locale.HINDI,
+            Locale.CROATIAN,
+            Locale.HUNGARIAN,
+            Locale.ARMENIAN,
+            Locale.INDONESIAN,
+            Locale.ICELANDIC,
+            Locale.ITALIAN,
+            Locale.JAPANESE,
+            Locale.GEORGIAN,
+            Locale.KOREAN,
+            Locale.LATIN,
+            Locale.LUXEMBOURGISH,
+            Locale.LITHUANIAN,
+            Locale.LATVIAN,
+            Locale.MAORI,
+            Locale.MACEDONIAN,
+            Locale.MONGOLIAN,
+            Locale.MALAY,
+            Locale.MALTESE,
+            Locale.DUTCH,
+            Locale.NORWEGIAN_NYNORSK,
+            Locale.NORWEGIAN1,
+            Locale.NORWEGIAN2,
+            Locale.POLISH,
+            Locale.BRAZILIAN_PORTUGUESE,
+            Locale.PORTUGUESE,
+            Locale.ROMANIAN,
+            Locale.RUSSIAN,
+            Locale.SLOVAK,
+            Locale.SLOVENIAN,
+            Locale.SOMALI,
+            Locale.ALBANIAN,
+            Locale.SERBIAN,
+            Locale.SWEDISH,
+            Locale.THAI,
+            Locale.TAGALOG,
+            Locale.TURKISH,
+            Locale.UKRAINIAN,
+            Locale.VALENCIAN,
+            Locale.VIETNAMESE,
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.TRADITIONAL_CHINESE
+    ));
+
     private GoogleApisTranslator() {
     }
 
@@ -27,91 +111,8 @@ public class GoogleApisTranslator implements Translator {
     }
 
     @Override
-    public boolean isLocaleSupported(Locale locale) {
-        switch (locale) {
-            case AFRIKAANS:
-            case ARABIC:
-            case AZERBAIJANI:
-            case BELARUSIAN:
-            case BULGARIAN:
-            case CATALAN:
-            case CZECH:
-            case WELSH:
-            case DANISH:
-            case AUSTRIAN_GERMAN:
-            case GERMAN:
-            case GREEK:
-            case AUSTRALIAN_ENGLISH:
-            case CANADIAN_ENGLISH:
-            case BRITISH_ENGLISH:
-            case NEW_ZEALAND_ENGLISH:
-            case PIRATE_ENGLISH:
-            case AMERICAN_ENGLISH:
-            case ESPERANTO:
-            case ARGENTINIAN_SPANISH:
-            case SPANISH:
-            case MEXICAN_SPANISH:
-            case URUGUAYAN_SPANISH:
-            case VENEZUELAN_SPANISH:
-            case ESTONIAN:
-            case BASQUE:
-            case PERSIAN:
-            case FINNISH:
-            case FILIPINO:
-            case FRENCH:
-            case CANADIAN_FRENCH:
-            case FRISIAN:
-            case IRISH:
-            case SCOTTISH_GAELIC:
-            case GALICIAN:
-            case HAWAIIAN:
-            case HEBREW:
-            case HINDI:
-            case CROATIAN:
-            case HUNGARIAN:
-            case ARMENIAN:
-            case INDONESIAN:
-            case ICELANDIC:
-            case ITALIAN:
-            case JAPANESE:
-            case GEORGIAN:
-            case KOREAN:
-            case LATIN:
-            case LUXEMBOURGISH:
-            case LITHUANIAN:
-            case LATVIAN:
-            case MAORI:
-            case MACEDONIAN:
-            case MONGOLIAN:
-            case MALAY:
-            case MALTESE:
-            case DUTCH:
-            case NORWEGIAN_NYNORSK:
-            case NORWEGIAN1:
-            case NORWEGIAN2:
-            case POLISH:
-            case BRAZILIAN_PORTUGUESE:
-            case PORTUGUESE:
-            case ROMANIAN:
-            case RUSSIAN:
-            case SLOVAK:
-            case SLOVENIAN:
-            case SOMALI:
-            case ALBANIAN:
-            case SERBIAN:
-            case SWEDISH:
-            case THAI:
-            case TAGALOG:
-            case TURKISH:
-            case UKRAINIAN:
-            case VALENCIAN:
-            case VIETNAMESE:
-            case SIMPLIFIED_CHINESE:
-            case TRADITIONAL_CHINESE:
-                return true;
-            default:
-                return false;
-        }
+    public Set<Locale> getSupportedLocales() {
+        return supportedLocales;
     }
 
     @Override
@@ -134,7 +135,8 @@ public class GoogleApisTranslator implements Translator {
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),
-                    StandardCharsets.UTF_8))) {
+                    StandardCharsets.UTF_8
+            ))) {
                 StringBuilder response = new StringBuilder();
                 String data;
                 while ((data = reader.readLine()) != null) {
