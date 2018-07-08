@@ -20,7 +20,7 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         Set<RatPlayer> recipients = new HashSet<>();
         Set<Player> toRemove = new HashSet<>();
-        for (Player bukkitPlayer: e.getRecipients()) {
+        for (Player bukkitPlayer : e.getRecipients()) {
             RatPlayer player = RatPlayer.of(bukkitPlayer);
             if (player.getTranslateMode() && !e.getPlayer().equals(bukkitPlayer)) {
                 toRemove.add(bukkitPlayer);
@@ -42,10 +42,12 @@ public class ChatListener implements Listener {
                         player.getDisplayName(),
                         auto
                         ? translator.translateAuto(message, locale)
-                        : translator.translate(message, player.getLocale(), locale)));
+                        : translator.translate(message, player.getLocale(), locale)
+                )
+        );
 
         Map<Locale, String> translateMap = recipients.stream().map(RatPlayer::getLocale).distinct().collect(collector);
-        for (RatPlayer recipient: recipients) {
+        for (RatPlayer recipient : recipients) {
             String translated = translateMap.get(recipient.getLocale());
             if (RatTranslate.getInstance().isJsonMessageAvailable()) {
                 String hover = recipient.format(langStorage,
@@ -53,7 +55,9 @@ public class ChatListener implements Listener {
                         Variable.ofAny("hover", "text", e.getMessage()),
                         Variable.ofAny("hover",
                                 "lang",
-                                recipient.format(langStorage, player.getLocale().toPropertiesKey())));
+                                recipient.format(langStorage, player.getLocale().toPropertiesKey())
+                        )
+                );
                 recipient.sendHoverableMessage(translated, hover);
             } else {
                 recipient.sendMessage(translated);

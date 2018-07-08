@@ -27,7 +27,8 @@ public class LanguageCommand implements TabExecutor {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     RatTranslate.getInstance()
-                                .format(RatTranslate.getInstance().getLangStorage(), "command.require-player")));
+                                .format(RatTranslate.getInstance().getLangStorage(), "command.require-player")
+            ));
             return false;
         }
         RatPlayer player = RatPlayer.of(((Player) sender));
@@ -38,7 +39,8 @@ public class LanguageCommand implements TabExecutor {
         if (localeCodes.contains(args[0].toLowerCase())) {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(),
                     "command.lang.set.failed",
-                    Variable.ofAny("alternative", "command", "/" + label + " set " + args[0]));
+                    Variable.ofAny("alternative", "command", "/" + label + " set " + args[0])
+            );
             return false;
         }
         switch (args[0].toLowerCase()) {
@@ -83,7 +85,8 @@ public class LanguageCommand implements TabExecutor {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(),
                     "command.page-over",
                     Variable.ofNumber("page", "page", page),
-                    Variable.ofNumber("page", "maxPage", maxPage));
+                    Variable.ofNumber("page", "maxPage", maxPage)
+            );
             return false;
         }
         player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.lang.list.header");
@@ -93,16 +96,18 @@ public class LanguageCommand implements TabExecutor {
                     "command.page-column",
                     Variable.ofAny("language",
                             "name",
-                            player.format(RatTranslate.getInstance().getLangStorage(),
-                                    values.get(i).toPropertiesKey())),
-                    Variable.ofAny("language", "code", values.get(i).getCode()));
+                            player.format(RatTranslate.getInstance().getLangStorage(), values.get(i).toPropertiesKey())
+                    ),
+                    Variable.ofAny("language", "code", values.get(i).getCode())
+            );
         }
         if (page == maxPage) {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(), "command.page-footer-end");
         } else {
             player.sendMessage(RatTranslate.getInstance().getLangStorage(),
                     "command.page-footer",
-                    Variable.ofAny("command", "command", label + " list " + (page + 1)));
+                    Variable.ofAny("command", "command", label + " list " + (page + 1))
+            );
         }
         return true;
     }
@@ -125,7 +130,9 @@ public class LanguageCommand implements TabExecutor {
                         player.format(RatTranslate.getInstance().getLangStorage(), locale.toPropertiesKey()) +
                         " (" +
                         locale.getCode() +
-                        ")"));
+                        ")"
+                )
+        );
         return true;
     }
 
@@ -133,7 +140,8 @@ public class LanguageCommand implements TabExecutor {
         Locale locale = player.getLocale();
         player.sendMessage(RatTranslate.getInstance().getLangStorage(),
                 "command.lang.show",
-                Variable.ofAny("lang", "lang", locale.getName() + "(" + locale.getCode() + ")"));
+                Variable.ofAny("lang", "lang", locale.getName() + "(" + locale.getCode() + ")")
+        );
     }
 
     @Override

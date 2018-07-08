@@ -23,7 +23,8 @@ public class Lang {
                                "The language `%s`(%s) does not support key '%s'",
                                locale.getName(),
                                locale.getCode(),
-                               key)));
+                               key
+                       )));
     }
 
     public Locale getLocale() {

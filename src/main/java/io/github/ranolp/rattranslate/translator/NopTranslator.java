@@ -3,7 +3,13 @@ package io.github.ranolp.rattranslate.translator;
 import io.github.ranolp.rattranslate.BukkitConfiguration;
 import io.github.ranolp.rattranslate.Locale;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class NopTranslator implements Translator {
+    private final Set<Locale> supportedLocales = new HashSet<>(Arrays.asList(Locale.values()));
+
     private NopTranslator() {
     }
 
@@ -17,8 +23,8 @@ public class NopTranslator implements Translator {
     }
 
     @Override
-    public boolean isLocaleSupported(Locale locale) {
-        return true;
+    public Set<Locale> getSupportedLocales() {
+        return supportedLocales;
     }
 
     @Override

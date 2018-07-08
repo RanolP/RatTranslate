@@ -18,9 +18,11 @@ public class RatTranslateCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            sender.sendMessage(ChatColor.translateAlternateColorCodes(
+                    '&',
                     RatTranslate.getInstance()
-                                .format(RatTranslate.getInstance().getLangStorage(), "command.require-player")));
+                                .format(RatTranslate.getInstance().getLangStorage(), "command.require-player")
+            ));
             return false;
         }
         RatPlayer player = RatPlayer.of(((Player) sender));
@@ -35,9 +37,11 @@ public class RatTranslateCommand implements TabExecutor {
                     player.setTranslateMode(false);
                     break;
                 default:
-                    player.sendMessage(RatTranslate.getInstance().getLangStorage(),
+                    player.sendMessage(
+                            RatTranslate.getInstance().getLangStorage(),
                             "chat.translate.error",
-                            Variable.ofAny("command", "command", "/" + label));
+                            Variable.ofAny("command", "command", "/" + label)
+                    );
                     return false;
             }
         }

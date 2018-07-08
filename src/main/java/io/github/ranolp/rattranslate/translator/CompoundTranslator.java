@@ -5,12 +5,19 @@ import io.github.ranolp.rattranslate.Locale;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CompoundTranslator implements Translator {
+    private final Set<Locale> supportedLocales;
     private List<Translator> translators;
 
     public CompoundTranslator(List<Translator> translators) {
         this.translators = Objects.requireNonNull(translators, "translators");
+        this.supportedLocales = this.translators.stream()
+                                                .map(Translator::getSupportedLocales)
+                                                .flatMap(Set::stream)
+                                                .collect(Collectors.toSet());
     }
 
     @Override
@@ -19,18 +26,13 @@ public class CompoundTranslator implements Translator {
     }
 
     @Override
-    public boolean isLocaleSupported(Locale locale) {
-        for (Translator it: translators) {
-            if (it.isLocaleSupported(locale)) {
-                return true;
-            }
-        }
-        return false;
+    public Set<Locale> getSupportedLocales() {
+        return supportedLocales;
     }
 
     @Override
     public boolean isAutoSupported() {
-        for (Translator it: translators) {
+        for (Translator it : translators) {
             if (it.isAutoSupported()) {
                 return true;
             }
@@ -40,7 +42,7 @@ public class CompoundTranslator implements Translator {
 
     @Override
     public String translate(String sentences, Locale from, Locale to) {
-        for (Translator it: translators) {
+        for (Translator it : translators) {
             if (it.isLocaleSupported(from) && it.isLocaleSupported(to)) {
                 String result = it.translate(sentences, from, to);
                 if (result != null) {
@@ -53,7 +55,7 @@ public class CompoundTranslator implements Translator {
 
     @Override
     public String translateAuto(String sentences, Locale to) {
-        for (Translator it: translators) {
+        for (Translator it : translators) {
             if (it.isAutoSupported() && it.isLocaleSupported(to)) {
                 String result = it.translateAuto(sentences, to);
                 if (result != null) {

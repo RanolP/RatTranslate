@@ -82,14 +82,20 @@ public enum Locale {
                                 or(c -> Arrays.binarySearch(SPECIAL_CHARS, c) > 0);
 
         @Override
-        public boolean isAmbiguousSentence(String sentence) {
-            int okCount = sentence.length() * OK_PERCENTAGE / 100;
-            for (char c: sentence.toCharArray()) {
+        public boolean predictSupported() {
+            return true;
+        }
+
+        @Override
+        public float predict(String sentence) {
+            float result = 100f;
+            float decrease = 100f / sentence.length();
+            for (char c : sentence.toCharArray()) {
                 if (!PREDICATE.test(c)) {
-                    okCount--;
+                    result -= decrease;
                 }
             }
-            return okCount <= 0;
+            return result;
         }
     },
     KOLSCH_OR_RIPUARIAN("Kölsch/Ripoarisch", "ksh_DE"),
@@ -137,7 +143,7 @@ public enum Locale {
     TRADITIONAL_CHINESE("繁體中文", "zh_TW");
 
     // 30 percent of invalid characters are allowed in locale.
-    private static final int OK_PERCENTAGE = 30;
+    private static final float OK_PERCENTAGE = 30f;
 
     private final String name;
     private final String code;
@@ -152,7 +158,7 @@ public enum Locale {
     }
 
     public static Locale getByCode(String code) {
-        for (Locale l: values()) {
+        for (Locale l : values()) {
             if (l.getCode().equalsIgnoreCase(code)) {
                 return l;
             }
@@ -160,8 +166,16 @@ public enum Locale {
         return null;
     }
 
-    public boolean isAmbiguousSentence(String sentence) {
+    public boolean predictSupported() {
         return false;
+    }
+
+    public float predict(String sentence) {
+        return 100f;
+    }
+
+    public boolean isAmbiguousSentence(String sentence) {
+        return predict(sentence) + OK_PERCENTAGE >= 100f;
     }
 
     public String getName() {

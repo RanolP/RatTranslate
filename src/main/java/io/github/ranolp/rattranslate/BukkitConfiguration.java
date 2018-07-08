@@ -48,4 +48,8 @@ public class BukkitConfiguration {
     public Set<String> getKeys(boolean deep) {
         return configuration.getKeys(deep);
     }
+
+    public ConfigurationSection getRawSection() {
+        return configuration;
+    }
 }

@@ -3,10 +3,16 @@ package io.github.ranolp.rattranslate.translator;
 import io.github.ranolp.rattranslate.BukkitConfiguration;
 import io.github.ranolp.rattranslate.Locale;
 
+import java.util.Set;
+
 public interface Translator {
     void applyConfiguration(BukkitConfiguration section);
 
-    boolean isLocaleSupported(Locale locale);
+    Set<Locale> getSupportedLocales();
+
+    default boolean isLocaleSupported(Locale locale) {
+        return getSupportedLocales().contains(locale);
+    }
 
     boolean isAutoSupported();
 
