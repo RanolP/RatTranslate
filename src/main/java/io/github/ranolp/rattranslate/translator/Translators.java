@@ -10,6 +10,7 @@ public final class Translators {
 
     static {
         register("GoogleApis", GoogleApisTranslator::getInstance);
+        register("Papago", PapagoTranslator::getInstance);
     }
 
     private Translators() {
