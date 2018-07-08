@@ -3,6 +3,7 @@ package io.github.ranolp.rattranslate;
 import io.github.ranolp.rattranslate.lang.LangStorage;
 import io.github.ranolp.rattranslate.lang.Variable;
 import io.github.ranolp.rattranslate.translator.Translator;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,7 +35,7 @@ public class ChatListener implements Listener {
         Translator translator = RatTranslate.getInstance().getTranslator();
         RatPlayer player = RatPlayer.of(e.getPlayer());
 
-        String message = e.getMessage();
+        String message = ChatColor.stripColor(e.getMessage());
         boolean auto = translator.isAutoSupported() && player.getLocale().isAmbiguousSentence(message);
 
         Collector<Locale, ?, Map<Locale, String>> collector = Collectors.toMap(locale -> locale,
