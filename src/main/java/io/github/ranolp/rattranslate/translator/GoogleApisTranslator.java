@@ -98,6 +98,8 @@ public class GoogleApisTranslator implements Translator {
             Locale.TRADITIONAL_CHINESE
     ));
 
+    private GoogleApisTokenGenerator generator = new GoogleApisTokenGenerator();
+
     private GoogleApisTranslator() {
     }
 
@@ -125,12 +127,16 @@ public class GoogleApisTranslator implements Translator {
             return sentences;
         }
         try {
-            String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" +
-                         from +
-                         "&tl=" +
-                         to +
-                         "&dt=t&q=" +
-                         URLEncoder.encode(sentences, "UTF-8");
+            String token = generator.generate(sentences);
+            if(token == null) {
+                generator.updateTKK();
+                token = generator.generate(sentences);
+            }
+            String url = "https://translate.googleapis.com/translate_a/single?client=t" +
+                    "&tk=" + token +
+                    "&sl=" + from +
+                    "&tl=" + to +
+                    "&dt=t&q=" + URLEncoder.encode(sentences, "UTF-8");
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
