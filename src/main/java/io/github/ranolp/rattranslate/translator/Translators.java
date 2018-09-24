@@ -10,6 +10,7 @@ public final class Translators {
 
     static {
         register("GoogleApis", GoogleApisTranslator::getInstance);
+        register("OldGoogleApis", OldwayGoogleApisTranslator::getInstance);
         register("Papago", PapagoTranslator::getInstance);
         register("Kakao", KakaoTranslator::getInstance);
         register("Autoable", AutoableTranslator::new);
