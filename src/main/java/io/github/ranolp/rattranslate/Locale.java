@@ -1,7 +1,6 @@
 package io.github.ranolp.rattranslate;
 
-import java.util.Arrays;
-import java.util.function.Predicate;
+import io.github.ranolp.rattranslate.util.Predict;
 
 public enum Locale {
     AFRIKAANS("Afrikaans", "af_ZA"),
@@ -22,9 +21,35 @@ public enum Locale {
     CANADIAN_ENGLISH("Canadian English", "en_CA"),
     BRITISH_ENGLISH("English (UK)", "en_GB"),
     NEW_ZEALAND_ENGLISH("New Zealand English", "en_NZ"),
-    BRITISH_ENGLISH_UPSIDE_DOWN("ɥsᴉꞁᵷuƎ (ɯopᵷuᴉ\uA7B0 pǝʇᴉu∩)", "en_UD"),
+    BRITISH_ENGLISH_UPSIDE_DOWN("ɥsᴉꞁᵷuƎ (ɯopᵷuᴉꞰ pǝʇᴉu∩)", "en_UD"),
     PIRATE_ENGLISH("Pirate Speak", "en_7S"),
-    AMERICAN_ENGLISH("English (US)", "en_US"),
+    AMERICAN_ENGLISH("English (US)", "en_US") {
+        private final Predict predict = new Predict()
+                // Braces
+                .charset('{', '}', '[', ']', '(', ')')
+                // Punctuation Marks
+                .charset('!', '.', '?', ',', '\'', '"', ':', '&')
+                // Mathematics
+                .charset('%', '^', '*', '-', '=', '+', '<', '>', '/')
+                // Logical (for Programmers)
+                .charset('&', '|')
+                // Other
+                .charset('@', '#', '$', '_', '\\')
+                // Uppercase Characters
+                .ranges('A', 'Z')
+                // Lowercase Characters
+                .ranges('a', 'z');
+
+        @Override
+        public boolean predictSupported() {
+            return true;
+        }
+
+        @Override
+        public float predict(String sentence) {
+            return predict.checkAll(sentence);
+        }
+    },
     ESPERANTO("Esperanto", "eo_UY"),
     ARGENTINIAN_SPANISH("Español (Argentina)", "es_AR"),
     SPANISH("Español (España)", "es_ES"),
@@ -54,32 +79,30 @@ public enum Locale {
     ICELANDIC("Íslenska", "is_IS"),
     IDO("Ido", "io"),
     ITALIAN("Italiano", "it_IT"),
-    JAPANESE("日本語", "ja_JP"),
-    LOJBAN("la .lojban.", "jbo_EN"),
-    GEORGIAN("ქართული", "ka_GE"),
-    KOREAN("한국어", "ko_KR") {
-        private final char[] SPECIAL_CHARS = {
+    JAPANESE("日本語", "ja_JP") {
+        private final Predict predict = new Predict()
                 // Braces
-                '{', '}', '[', ']', '(', ')',
+                .charset('{', '}', '[', ']', '(', ')', '＜', '＞', '（', '）')
                 // Punctuation Marks
-                '!', '.', '?', ',', '\'', '"', ':', '&',
+                .charset('!', '.', '?', ',', '\'', '"', ':', '&', '。', '、', '？', '！')
                 // Mathematics
-                '%', '^', '*', '-', '=', '+', '<', '>', '/',
+                .charset('%', '^', '*', '-', '=', '+', '<', '>', '/')
                 // Logical (for Programmers)
-                '&', '|',
+                .charset('&', '|')
                 // Other
-                '@', '#', '$', '_', '\\'
-        };
-
-        private final Predicate<Character> PREDICATE =
-                // Minecraft Nickname Part
-                ((Predicate<Character>) Locale::isMinecraftNicknamePart).
-                        // Hangul Standard Syllable
-                                or(c -> '가' <= c && c <= '힣').
-                        // Hangul Compatible Jamo
-                                or(c -> ('ㄱ' <= c && c <= 'ㅎ') || ('ㅏ' <= c && c <= 'ㅣ')).
-                        // Special Characters
-                                or(c -> Arrays.binarySearch(SPECIAL_CHARS, c) > 0);
+                .charset('@', '#', '$', '_', '\\', '・', '＠', '＃', '＄', '％', '＾', '＆', '＊', '＝', '＋')
+                // CJK Ideological Characters
+                .ranges('ぁ', 'ゖ')
+                // Hiragana
+                .ranges('ぁ', 'ん')
+                // Katakana
+                .ranges('ァ', 'ン')
+                // Half-width Katakana
+                .ranges('ｧ', 'ﾝ').charset('ﾞ', 'ﾟ')
+                // Full-width Numbers
+                .ranges('０', '９')
+                // CJK common kanji
+                .ranges('一', '龯');
 
         @Override
         public boolean predictSupported() {
@@ -88,14 +111,36 @@ public enum Locale {
 
         @Override
         public float predict(String sentence) {
-            float result = 100f;
-            float decrease = 100f / sentence.length();
-            for (char c : sentence.toCharArray()) {
-                if (!PREDICATE.test(c)) {
-                    result -= decrease;
-                }
-            }
-            return result;
+            return predict.checkAll(sentence);
+        }
+    },
+    LOJBAN("la .lojban.", "jbo_EN"),
+    GEORGIAN("ქართული", "ka_GE"),
+    KOREAN("한국어", "ko_KR") {
+        private final Predict predict = new Predict()
+                // Braces
+                .charset('{', '}', '[', ']', '(', ')')
+                // Punctuation Marks
+                .charset('!', '.', '?', ',', '\'', '"', ':', '&')
+                // Mathematics
+                .charset('%', '^', '*', '-', '=', '+', '<', '>', '/')
+                // Logical (for Programmers)
+                .charset('&', '|')
+                // Other
+                .charset('@', '#', '$', '_', '\\')
+                // Hangul Standard Syllable
+                .ranges('가', '힣')
+                // Hangul Compatible Jamo
+                .ranges('ㄱ', 'ㅎ').ranges('ㅏ', 'ㅣ');
+
+        @Override
+        public boolean predictSupported() {
+            return true;
+        }
+
+        @Override
+        public float predict(String sentence) {
+            return predict.checkAll(sentence);
         }
     },
     KOLSCH_OR_RIPUARIAN("Kölsch/Ripoarisch", "ksh_DE"),
@@ -151,10 +196,6 @@ public enum Locale {
     Locale(String name, String code) {
         this.name = name;
         this.code = code;
-    }
-
-    private static boolean isMinecraftNicknamePart(char c) {
-        return Character.isLetterOrDigit(c) || c == '_';
     }
 
     public static Locale getByCode(String code) {
