@@ -1,6 +1,5 @@
 package io.github.ranolp.rattranslate.translator;
 
-import com.google.gson.JsonElement;
 import io.github.ranolp.rattranslate.BukkitConfiguration;
 import io.github.ranolp.rattranslate.Locale;
 import io.github.ranolp.rattranslate.util.GsonUtil;
@@ -74,13 +73,7 @@ public class KakaoTranslator implements Translator {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),
                     StandardCharsets.UTF_8
             ))) {
-                StringBuilder response = new StringBuilder();
-                String data;
-                while ((data = reader.readLine()) != null) {
-                    response.append(data);
-                }
-                JsonElement element = GsonUtil.parse(response);
-                return element.getAsJsonObject().get("result").getAsString();
+                return GsonUtil.parse(reader).getAsJsonObject().get("result").getAsString();
             }
         } catch (IOException | IllegalStateException | ClassCastException | UnsupportedOperationException ignore) {
             // ignore all
