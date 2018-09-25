@@ -1,8 +1,9 @@
 package io.github.ranolp.rattranslate;
 
 import io.github.ranolp.rattranslate.translator.Translator;
+import io.github.ranolp.rattranslate.util.Figures;
 import io.github.ranolp.rattranslate.util.StyledText;
-import io.github.ranolp.rattranslate.util.Symbols;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -12,15 +13,10 @@ import java.util.List;
 import static io.github.ranolp.rattranslate.util.ColorUtil.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class TranslateTest {
+@Disabled
+class TranslateTest {
     private final String name;
     private final Translator translator;
-
-    public TranslateTest(String name, Translator translator) {
-        this.name = name;
-        this.translator = translator;
-    }
-
     private List<AbstractTestCase> testCases = Arrays.asList(
             new TestCase("Hello", Locale.AMERICAN_ENGLISH, Locale.KOREAN),
             new TestCase("Hello", Locale.AMERICAN_ENGLISH, Locale.JAPANESE),
@@ -38,8 +34,13 @@ public class TranslateTest {
             new AutoTestCase("안녕", Locale.AMERICAN_ENGLISH), new AutoTestCase("안녕", Locale.JAPANESE)
     );
 
+    TranslateTest(String name, Translator translator) {
+        this.name = name;
+        this.translator = translator;
+    }
+
     @Test
-    public void test() {
+    void test() {
         System.out.println(bgBlue(" ", name, " "));
         for (AbstractTestCase testCase : testCases) {
             System.out.println("   " + testCase.translate(translator));
@@ -57,13 +58,13 @@ public class TranslateTest {
 
         public abstract StyledText translate(Translator translator);
 
-        protected StyledText failure(String cause) {
-            return fgRed(Symbols.cross, " ", cause);
+        StyledText failure(String cause) {
+            return fgRed(Figures.CROSS, " ", cause);
         }
 
-        protected StyledText success(Object... message) {
+        StyledText success(Object... message) {
             Object[] real = new Object[message.length + 2];
-            real[0] = Symbols.tick;
+            real[0] = Figures.TICK;
             real[1] = " ";
             System.arraycopy(message, 0, real, 2, message.length);
             return fgGreen(real);
@@ -91,11 +92,11 @@ public class TranslateTest {
 
             if (translated == null || translated.isEmpty()) {
                 return failure(
-                        "Cannot translate " + sentence + "(" + input.getName() + ") to " + output.getName());
+                        "Cannot translate " + sentence + "[" + input.getName() + "] to [" + output.getName() + "]");
             }
 
-            return fgGreen(Symbols.tick, " ", sentence, "(", input.getName(), ") ", Symbols.arrowRight, " ",
-                    translated, "(", output.getName(), ")"
+            return success(sentence, "[", input.getName(), "] ", Figures.ARROW_RIGHT, " ", translated, "[",
+                    output.getName(), "]"
             );
         }
     }
@@ -117,11 +118,9 @@ public class TranslateTest {
             String translated = translator.translateAuto(sentence, output);
 
             if (translated == null || translated.isEmpty()) {
-                return failure("Cannot translate " + sentence + " to " + output.getName());
+                return failure("Cannot translate " + sentence + " to [" + output.getName() + "]");
             }
-            return fgGreen(Symbols.tick, " ", sentence, "(auto) ", Symbols.arrowRight, " ", translated,
-                    "(" + output.getName() + ")"
-            );
+            return success(sentence, "[auto] ", Figures.ARROW_RIGHT, " ", translated, "[" + output.getName() + "]");
         }
     }
 }
