@@ -64,7 +64,7 @@ public class PapagoTranslator implements Translator {
             dos.writeBytes(postParams);
             dos.flush();
             dos.close();
-            return GsonUtil.parse(connection.getInputStream()).getAsJsonObject().get("translatedText").getAsString();
+            return GsonUtil.parse(connection.getInputStream(), StandardCharsets.UTF_8).getAsJsonObject().get("translatedText").getAsString();
         } catch (IOException | IllegalStateException | IndexOutOfBoundsException | UnsupportedOperationException | NullPointerException ignore) {
             // ignore all
         }
