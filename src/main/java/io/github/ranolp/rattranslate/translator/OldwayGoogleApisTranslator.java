@@ -1,13 +1,10 @@
 package io.github.ranolp.rattranslate.translator;
 
-import com.google.gson.JsonElement;
 import io.github.ranolp.rattranslate.BukkitConfiguration;
 import io.github.ranolp.rattranslate.Locale;
 import io.github.ranolp.rattranslate.util.GsonUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -68,16 +65,14 @@ public class OldwayGoogleApisTranslator implements Translator {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                StringBuilder response = new StringBuilder();
-                String data;
-                while ((data = reader.readLine()) != null) {
-                    response.append(data);
-                }
-                JsonElement element = GsonUtil.parse(response);
-                return element.getAsJsonArray().get(0).getAsJsonArray().get(0).getAsJsonArray().get(0).getAsString();
-            }
+            return GsonUtil.parse(connection.getInputStream(), StandardCharsets.UTF_8)
+                    .getAsJsonArray()
+                    .get(0)
+                    .getAsJsonArray()
+                    .get(0)
+                    .getAsJsonArray()
+                    .get(0)
+                    .getAsString();
         } catch (IOException | IllegalStateException | IndexOutOfBoundsException | UnsupportedOperationException ignore) {
             // ignore all
         }
