@@ -1,14 +1,11 @@
 package io.github.ranolp.rattranslate.translator;
 
-import com.google.gson.JsonElement;
 import io.github.ranolp.rattranslate.BukkitConfiguration;
 import io.github.ranolp.rattranslate.Locale;
 import io.github.ranolp.rattranslate.util.GsonUtil;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -18,29 +15,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PapagoTranslator implements Translator {
-    private final Set<Locale> supportedLocales = new HashSet<>(Arrays.asList(Locale.KOREAN,
-            Locale.AMERICAN_ENGLISH,
-            Locale.JAPANESE,
-            Locale.SIMPLIFIED_CHINESE,
-            Locale.TRADITIONAL_CHINESE,
-            Locale.SPANISH,
-            Locale.ARGENTINIAN_SPANISH,
-            Locale.MEXICAN_SPANISH,
-            Locale.URUGUAYAN_SPANISH,
-            Locale.VENEZUELAN_SPANISH,
-            Locale.FRENCH,
-            Locale.CANADIAN_FRENCH,
-            Locale.GERMAN,
-            Locale.AUSTRIAN_GERMAN,
-            Locale.LOW_GERMAN,
-            Locale.SWABIAN_GERMAN,
-            Locale.RUSSIAN,
-            Locale.PORTUGUESE,
-            Locale.VIETNAMESE,
-            Locale.THAI,
-            Locale.INDONESIAN,
-            Locale.HINDI
-    ));
+    private final Set<Locale> supportedLocales = new HashSet<>(
+            Arrays.asList(Locale.KOREAN, Locale.AMERICAN_ENGLISH, Locale.JAPANESE, Locale.SIMPLIFIED_CHINESE,
+                    Locale.TRADITIONAL_CHINESE, Locale.SPANISH, Locale.ARGENTINIAN_SPANISH, Locale.MEXICAN_SPANISH,
+                    Locale.URUGUAYAN_SPANISH, Locale.VENEZUELAN_SPANISH, Locale.FRENCH, Locale.CANADIAN_FRENCH,
+                    Locale.GERMAN, Locale.AUSTRIAN_GERMAN, Locale.LOW_GERMAN, Locale.SWABIAN_GERMAN, Locale.RUSSIAN,
+                    Locale.PORTUGUESE, Locale.VIETNAMESE, Locale.THAI, Locale.INDONESIAN, Locale.HINDI
+            ));
 
     private PapagoTranslator() {
     }
@@ -68,7 +49,7 @@ public class PapagoTranslator implements Translator {
             return sentences;
         }
         try {
-            String apiURL = "http://papago.naver.com/apis/nsmt/translate";
+            String apiURL = "https://papago.naver.com/apis/n2mt/translate";
             URL url = new URL(apiURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -76,26 +57,16 @@ public class PapagoTranslator implements Translator {
             connection.addRequestProperty("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
             String base = "rlWxnJA0Vwc0paIyLCJkaWN0RGlzcGxheSI6NSwic291cmNlIjoi";
             String str = String.format("%s\",\"target\":\"%s\",\"text\":\"%s\"}", from, to, sentences);
-            String postParams = "data=" +
-                                base +
-                                Base64.getEncoder().encodeToString(str.getBytes(StandardCharsets.UTF_8));
+            String postParams = "data=" + base + Base64.getEncoder()
+                    .encodeToString(str.getBytes(StandardCharsets.UTF_8));
             connection.setDoOutput(true);
             DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
             dos.writeBytes(postParams);
             dos.flush();
             dos.close();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(),
-                    StandardCharsets.UTF_8
-            ));
-            String line;
-            StringBuilder response = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                response.append(line);
-            }
-            br.close();
-            JsonElement element = GsonUtil.parse(response.toString());
-            return element.getAsJsonObject().get("translatedText").getAsString();
+            return GsonUtil.parse(connection.getInputStream()).getAsJsonObject().get("translatedText").getAsString();
         } catch (IOException | IllegalStateException | IndexOutOfBoundsException | UnsupportedOperationException | NullPointerException ignore) {
+            // ignore all
         }
         return null;
     }
